@@ -8,3 +8,6 @@ esxi_host: 'dh01.am2.cloudra.local'
 notes: 'Created by Ansible'
 vm_template: 'Docker-Template'
 lb_template: 'RHEL73_Template'
+ISO_Datastore: 'docker_share_data2'
+RHEL_ISO: 'ISO_Images/RHEL-7.3-20161019.0-Server-x86_64-dvd1.iso'
+

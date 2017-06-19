@@ -9,7 +9,8 @@
     - vars.yml
 
   tasks:
-    - vsphere_guest:
+    - name: Create UCP, DTR and worker VMs
+      vsphere_guest:
         vcenter_hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_user }}"
         password: "{{ vcenter_pass }}"
@@ -21,6 +22,10 @@
         vm_extra_config:
           notes: "{{ notes }}"
           folder: 'dp'
+        vm_hardware: 
+          vm_cdrom:
+            type: "iso"
+            iso_path: "{{ ISO_Datastore }}/{{ RHEL_ISO }}"
         esxi:
           datacenter: "{{ datacenter }}"
           hostname: "{{ esxi_host }}"

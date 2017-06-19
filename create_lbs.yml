@@ -9,7 +9,8 @@
     - vars.yml
 
   tasks:
-    - vsphere_guest:
+    - name: Create Load Balancer VMs
+      vsphere_guest:
         vcenter_hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_user }}"
         password: "{{ vcenter_pass }}"

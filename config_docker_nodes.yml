@@ -1,0 +1,27 @@
+---
+- hosts: dtr,ucp,worker
+  gather_facts: false
+  connection: local
+  user: remote
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Power on Docker guests
+      vsphere_guest:
+        vcenter_hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        cluster: "{{ cluster }}"
+        guest: "{{ inventory_hostname }}"
+        state: powered_on
+#    - name: Configure yum repository
+#      yum_repository:
+#        name: 'Red Hat Enterprise Linux 7.3'
+#        description: 'Red Hat Enterprise Linux 7.3'
+#        gpgcheck: no
+#        enabled: yes
+#        baseurl: file:///mnt/cdrom/
+#        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release

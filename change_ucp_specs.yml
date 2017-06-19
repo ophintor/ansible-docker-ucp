@@ -9,7 +9,8 @@
     - vars.yml
 
   tasks:
-    - vsphere_guest:
+    - name: Reconfigure CPU and RAM specs
+      vsphere_guest:
         vcenter_hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_user }}"
         password: "{{ vcenter_pass }}"

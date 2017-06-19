@@ -7,3 +7,4 @@
 - include: change_dtr_specs.yml
 - include: change_worker_specs.yml
 - include: change_lbs_specs.yml
+- include: config_docker_nodes.yml
