@@ -1,0 +1,10 @@
+---
+vcenter_hostname: 'dhvc.am2.cloudra.local'
+vcenter_user: 'administrator@vsphere.local'
+vcenter_pass: 'CloudLab1!'
+datacenter: 'PCE-DC'
+cluster: 'Engineering'
+esxi_host: 'dh01.am2.cloudra.local'
+notes: 'Created by Ansible'
+vm_template: 'Docker-Template'
+lb_template: 'RHEL73_Template'

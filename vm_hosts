@@ -1,0 +1,10 @@
+[ucp]
+dp_ucp[01:03]
+[dtr]
+dp_dtr[01:03]
+[worker]
+dp_worker[01:03]
+[lbs]
+dp_ucp_lb
+dp_dtr_lb
+dp_app_lb
