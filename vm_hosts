@@ -1,9 +1,15 @@
 [ucp]
-dp_ucp[01:03]
+dp_ucp01 ip_addr='10.10.174.63/22'
+dp_ucp02 ip_addr='10.10.174.64/22'
+dp_ucp03 ip_addr='10.10.174.65/22'
 [dtr]
-dp_dtr[01:03]
+dp_dtr01 ip_addr='10.10.174.66/22'
+dp_dtr02 ip_addr='10.10.174.67/22'
+dp_dtr03 ip_addr='10.10.174.68/22'
 [worker]
-dp_worker[01:03]
+dp_worker01 ip_addr='10.10.174.69/22'
+dp_worker02 ip_addr='10.10.174.70/22'
+dp_worker03 ip_addr='10.10.174.71/22'
 [lbs]
 dp_ucp_lb
 dp_dtr_lb

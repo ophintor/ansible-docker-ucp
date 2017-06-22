@@ -1,27 +1,34 @@
 ---
-- hosts: dtr,ucp,worker
+- hosts: ucp,dtr,worker
   gather_facts: false
-  connection: local
-  user: remote
+  become_user: root
   become: true
 
   vars_files:
     - vars.yml
 
   tasks:
-    - name: Power on Docker guests
-      vsphere_guest:
-        vcenter_hostname: "{{ vcenter_hostname }}"
+    - name: Update hostname
+      local_action:
+        module: vmware_vm_shell
+        hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_user }}"
-        password: "{{ vcenter_pass }}"
-        cluster: "{{ cluster }}"
-        guest: "{{ inventory_hostname }}"
-        state: powered_on
-#    - name: Configure yum repository
-#      yum_repository:
-#        name: 'Red Hat Enterprise Linux 7.3'
-#        description: 'Red Hat Enterprise Linux 7.3'
-#        gpgcheck: no
-#        enabled: yes
-#        baseurl: file:///mnt/cdrom/
-#        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+        password:  "{{ vcenter_pass }}"
+        vm_id: "{{ inventory_hostname }}"
+        vm_username: root
+        vm_password: "{{ vm_pw }}"
+        vm_shell: /bin/echo
+        vm_shell_args: "{{ inventory_hostname }}.{{ domain_name }} > /etc/hostname"
+
+    - name: Update IP address
+      local_action:
+        module: vmware_vm_shell
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password:  "{{ vcenter_pass }}"
+        vm_id: "{{ inventory_hostname }}"
+        vm_username: root
+        vm_password: "{{ vm_pw }}"
+        vm_shell: /bin/sed
+        vm_shell_args: "-i \"s/^IPADDR.*/IPADDR={{ ip_addr }}/g\" /etc/sysconfig/network-scripts/ifcfg-ens192"
+        #vm_shell_args: "IPADDR={{ ip_addr }} | cut -d'/' -f1  >> /etc/sysconfig/network-scripts/ifcfg-ens192"

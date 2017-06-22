@@ -1,0 +1,19 @@
+---
+- hosts: dtr,ucp,worker
+  gather_facts: false
+  connection: local
+  become_user: root
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Power on Docker guests
+      vsphere_guest:
+        vcenter_hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        cluster: "{{ cluster }}"
+        guest: "{{ inventory_hostname }}"
+        state: powered_on
