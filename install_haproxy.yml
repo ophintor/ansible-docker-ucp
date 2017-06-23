@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: lbs
   gather_facts: false
   become_user: root
   become: true
@@ -15,3 +15,26 @@
       environment:
         http_proxy: http://15.184.4.2:8080
         https_proxy: https://15.184.4.2:8080
+
+    - name: Updating haproxy.cfg
+      copy:
+        src: files/haproxy.cfg.{{ inventory_hostname }}
+        dest: /etc/haproxy/haproxy.cfg
+        owner: root
+        group: root
+        mode: 0644        
+
+    - name: Enable and start haproxy service
+      systemd:
+        name: haproxy
+        enabled: yes
+        state: started
+
+    - name: Open http port
+      command: firewall-cmd --permanent --zone=public --add-port=80/tcp
+
+    - name: Open https port
+      command: firewall-cmd --permanent --zone=public --add-port=443/tcp
+
+    - name: Reload firewalld
+      command: firewall-cmd --reload

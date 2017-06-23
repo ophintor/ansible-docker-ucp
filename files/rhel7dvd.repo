@@ -1,8 +1,0 @@
-[InstallMedia]
-name=Red Hat Enterprise Linux 7.3
-metadata_expire=-1
-gpgcheck=0
-enabled=1
-baseurl=file:///mnt/cdrom/
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
-
