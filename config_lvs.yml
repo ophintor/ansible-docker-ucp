@@ -1,5 +1,5 @@
 ---
-- hosts: dp_dtr02
+- hosts: docker
   gather_facts: false
   become_user: root
   become: true

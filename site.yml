@@ -7,4 +7,5 @@
 - include: config_networking.yml
 - include: test.yml
 - include: install_haproxy.yml
-- include: configure_lvs.yml
+- include: config_lvs.yml
+- include: start_docker.yml
