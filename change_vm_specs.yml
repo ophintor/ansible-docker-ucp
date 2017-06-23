@@ -1,0 +1,67 @@
+---
+- hosts: all
+  gather_facts: false
+  connection: local
+  user: remote
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Reconfigure CPU and RAM specs on UCP hosts
+      vsphere_guest:
+        vcenter_hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        cluster: "{{ cluster }}"
+        guest: "{{ inventory_hostname }}"
+        state: reconfigured
+        vm_extra_config:
+          vcpu.hotadd: yes
+          mem.hotadd: yes
+        vm_hardware:
+          memory_mb: 8192
+          num_cpus: 2
+        esxi:
+          datacenter:  "{{ datacenter }}"
+          hostname: "{{ esxi_host }}"
+      when: inventory_hostname in groups.ucp
+
+    - name: Reconfigure CPU and RAM specs on workers and DTR hosts
+      vsphere_guest:
+        vcenter_hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        cluster: "{{ cluster }}"
+        guest: "{{ inventory_hostname }}"
+        state: reconfigured
+        vm_extra_config:
+          vcpu.hotadd: yes
+          mem.hotadd: yes
+        vm_hardware:
+          memory_mb: 16384
+          num_cpus: 4
+        esxi:
+          datacenter:  "{{ datacenter }}"
+          hostname: "{{ esxi_host }}"
+      when: inventory_hostname in groups.dtr or inventory_hostname in groups.worker
+
+    - name: Reconfigure CPU and RAM specs on Load Balancers
+      vsphere_guest:
+        vcenter_hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        cluster: "{{ cluster }}"
+        guest: "{{ inventory_hostname }}"
+        state: reconfigured
+        vm_extra_config:
+          vcpu.hotadd: yes
+          mem.hotadd: yes
+        vm_hardware:
+          memory_mb: 4096
+          num_cpus: 2
+        esxi:
+          datacenter:  "{{ datacenter }}"
+          hostname: "{{ esxi_host }}"
+      when: inventory_hostname in groups.lbs

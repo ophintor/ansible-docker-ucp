@@ -1,5 +1,5 @@
 ---
-- hosts: dtr,ucp,worker
+- hosts: all
   gather_facts: false
   connection: local
   become_user: root
@@ -9,7 +9,7 @@
     - vars.yml
 
   tasks:
-    - name: Power on Docker guests
+    - name: Power on guests
       vsphere_guest:
         vcenter_hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_user }}"
@@ -17,3 +17,7 @@
         cluster: "{{ cluster }}"
         guest: "{{ inventory_hostname }}"
         state: powered_on
+
+    - name: Wait for VMs to come back
+      pause:
+        minutes: 3

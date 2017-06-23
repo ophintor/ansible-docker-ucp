@@ -1,0 +1,17 @@
+---
+- hosts: all
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Install haproxy
+      yum:
+        name: haproxy
+        state: latest
+      environment:
+        http_proxy: http://15.184.4.2:8080
+        https_proxy: https://15.184.4.2:8080

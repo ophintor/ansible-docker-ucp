@@ -1,5 +1,5 @@
 ---
-- hosts: ucp,dtr,worker
+- hosts: all
   gather_facts: false
   connection: local
   user: remote
@@ -22,10 +22,33 @@
         vm_extra_config:
           notes: "{{ notes }}"
           folder: 'dp'
-        vm_hardware: 
-          vm_cdrom:
-            type: "iso"
-            iso_path: "{{ ISO_Datastore }}/{{ RHEL_ISO }}"
+#        vm_hardware: 
+#          vm_cdrom:
+#            type: "iso"
+#            iso_path: "{{ ISO_Datastore }}/{{ RHEL_ISO }}"
         esxi:
           datacenter: "{{ datacenter }}"
           hostname: "{{ esxi_host }}"
+      when: inventory_hostname in groups.docker
+
+    - name: Create Load Balancer VMs
+      vsphere_guest:
+        vcenter_hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        cluster: "{{ cluster }}"
+        guest: "{{ inventory_hostname }}"
+        from_template: yes
+        template_src: "{{ lb_template }}"
+        power_on_after_clone: no
+        vm_extra_config:
+          notes: "{{ notes }}"
+          folder: 'dp'
+#        vm_hardware:
+#          vm_cdrom:
+#            type: "iso"
+#            iso_path: "{{ ISO_Datastore }}/{{ RHEL_ISO }}"
+        esxi:
+          datacenter: "{{ datacenter }}"
+          hostname: "{{ esxi_host }}"
+      when: inventory_hostname in groups.lbs

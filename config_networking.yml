@@ -1,0 +1,69 @@
+---
+- hosts: all
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Change hostname
+      local_action:
+        module: vmware_vm_shell
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password:  "{{ vcenter_pass }}"
+        vm_id: "{{ inventory_hostname }}"
+        vm_username: root
+        vm_password: "{{ vm_pw }}"
+        vm_shell: /bin/echo
+        vm_shell_args: "{{ inventory_hostname }}.{{ domain_name }} > /etc/hostname"
+
+    - name: Update hostname
+      local_action:
+        module: vmware_vm_shell
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password:  "{{ vcenter_pass }}"
+        vm_id: "{{ inventory_hostname }}"
+        vm_username: root
+        vm_password: "{{ vm_pw }}"
+        vm_shell: /usr/bin/hostnamectl
+        vm_shell_args: "set-hostname {{ inventory_hostname }}"
+
+    - name: Add new connection
+      local_action:
+        module: vmware_vm_shell
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password:  "{{ vcenter_pass }}"
+        vm_id: "{{ inventory_hostname }}"
+        vm_username: root
+        vm_password: "{{ vm_pw }}"
+        vm_shell: /usr/bin/nmcli
+        vm_shell_args: "con add con-name ens192 ifname ens192 type ethernet ip4 {{ ip_addr }} gw4 10.10.172.1"
+
+    - name: Bring connection up
+      local_action:
+        module: vmware_vm_shell
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password:  "{{ vcenter_pass }}"
+        vm_id: "{{ inventory_hostname }}"
+        vm_username: root
+        vm_password: "{{ vm_pw }}"
+        vm_shell: /usr/bin/nmcli
+        vm_shell_args: "con up ens192"
+
+    - name: Enable connection autoconnect
+      local_action:
+        module: vmware_vm_shell
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_user }}"
+        password:  "{{ vcenter_pass }}"
+        vm_id: "{{ inventory_hostname }}"
+        vm_username: root
+        vm_password: "{{ vm_pw }}"
+        vm_shell: /usr/bin/nmcli
+        vm_shell_args: "con mod ens192 connection.autoconnect yes"
