@@ -5,7 +5,8 @@
 - include: change_vm_specs.yml
 - include: power_on_guests.yml
 - include: config_networking.yml
-- include: test.yml
+- include: distribute_keys.yml
 - include: install_haproxy.yml
 - include: config_lvs.yml
 - include: start_docker.yml
+- include: install_ucp_nodes.yml

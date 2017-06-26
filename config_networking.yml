@@ -67,3 +67,6 @@
         vm_password: "{{ vm_pw }}"
         vm_shell: /usr/bin/nmcli
         vm_shell_args: "con mod ens192 connection.autoconnect yes"
+
+    - name: Update /etc/hosts
+      copy: src=files/hosts dest=/etc/hosts

@@ -1,0 +1,27 @@
+---
+- hosts: all
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - stat: path=/root/.ssh/id_rsa
+      register: key
+
+    - name: Create keypairs
+      shell: ssh-keygen -t rsa -f /root/.ssh/id_rsa -N ''
+      when: key.stat.exists == False
+
+    - name: Fetch all public ssh keys
+      shell: cat ~/.ssh/id_rsa.pub
+      register: ssh_keys
+
+    - name: Deploy keys on all servers
+      authorized_key: user=root key="{{ item[0] }}"
+      delegate_to: "{{ item[1] }}"
+      with_nested: 
+        - "{{ ssh_keys.stdout }}"
+        - "{{ groups.all }}"

@@ -1,0 +1,35 @@
+---
+- hosts: ucp
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Open required ports for UCP
+      command: firewall-cmd --permanent --zone=public --add-port=443/tcp --add-port=2376/tcp --add-port=2377/tcp --add-port=4789/tcp --add-port=4789/udp --add-port=7946/tcp --add-port=7946/udp --add-port=12376/tcp --add-port=12379/tcp --add-port=12380/tcp --add-port=12381/tcp --add-port=12382/tcp --add-port=12383/tcp --add-port=12384/tcp --add-port=12385/tcp --add-port=12386/tcp --add-port=12387/tcp
+
+    - name: Reload firewalld configuration
+      command: firewall-cmd --reload
+
+    - name: Install first manager node
+      command: docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp install --host-address {{ ip_addr | ipaddr('address') }} --admin-username=admin --admin-password={{ vm_pw }} --san dp_ucp_lb.am2.cloudra.local --san dp_ucp01.am2.cloudra.local --san dp_ucp02.am2.cloudra.local --san dp_ucp03.am2.cloudra.local --san 10.10.174.63 --san 10.10.174.64 --san 10.10.174.65
+      register: output
+      when: inventory_hostname == 'dp_ucp01'
+      failed_when: output.rc > 1
+
+    - name: Query UCP id
+      command: docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp id
+      register: ucp_id
+      when: inventory_hostname == 'dp_ucp01'
+
+    - name: Get swarm manager token
+      shell: echo `docker swarm join-token manager` | cut -f2 -d':' | sed 's|\\||g'
+      register: token
+      when: inventory_hostname == 'dp_ucp01'
+
+    - name: Add additional UCP nodes
+      command: "{{ hostvars.dp_ucp01.token.stdout }}"
+      when: inventory_hostname != 'dp_ucp01'

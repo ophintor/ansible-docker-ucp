@@ -30,11 +30,8 @@
         enabled: yes
         state: started
 
-    - name: Open http port
-      command: firewall-cmd --permanent --zone=public --add-port=80/tcp
-
-    - name: Open https port
-      command: firewall-cmd --permanent --zone=public --add-port=443/tcp
+    - name: Open http and https ports
+      command: firewall-cmd --permanent --zone=public --add-port=80/tcp --add-port=443/tcp
 
     - name: Reload firewalld
       command: firewall-cmd --reload
