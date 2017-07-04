@@ -40,9 +40,33 @@
       register: worker_token
       when: inventory_hostname == 'dp-ucp01'
 
-    - name: Save worker token
-      local_action: copy content="token{{ ":" }} {{ hostvars['dp-ucp01']['worker_token']['stdout'] }}" dest=/tmp/worker_token
+    - debug:
+        msg: "{{ hostvars['dp-ucp01'] }}"
+      when: inventory_hostname == 'dp-ucp01'
 
     - name: Add additional UCP nodes to the swarm
       command: "{{ hostvars['dp-ucp01']['manager_token']['stdout'] }}"
       when: inventory_hostname in ['dp-ucp02','dp-ucp03']
+
+    - name: Add DTR and Worker nodes to the swarm
+      command: "{{ hostvars['dp-ucp01']['worker_token']['stdout'] }}"
+      when: inventory_hostname in ['dp-dtr01','dp-dtr02','dp-dtr03','dp-worker01','dp-worker02','dp-worker03']
+
+    - name: Wait for all services to start up properly
+      pause:
+        minutes: 3
+
+    - name: Install first DTR node
+      command: docker run --rm docker/dtr:2.2.5 install --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-insecure-tls --dtr-external-url https://dp-dtr-lb.am2.cloudra.local:443 --ucp-url https://dp-ucp01.am2.cloudra.local:443 --ucp-username admin --ucp-password {{ vm_pw }}
+      # command: docker run --rm docker/dtr:2.2.5 install --ucp-node {{ inventory_hostname }} --ucp-insecure-tls --dtr-external-url https://dp-dtr-lb.am2.cloudra.local:443 --ucp-url https://10.10.174.63:443 --ucp-username admin --ucp-password {{ vm_pw }}
+      when: inventory_hostname == 'dp-dtr01'
+      register: dtrlog
+
+    - name: Grab DTR flag from output
+      shell: echo "{{ dtrlog.stdout }}" | grep 'You can use flag'| cut -d "'" -f2
+      when: inventory_hostname == 'dp-dtr01'
+      register: flag
+
+    - name: Add DTR nodes
+      command: docker run --rm docker/dtr:2.2.5 join --ucp-node {{ inventory_hostname }}.{{ domain_name }} -ucp-url https://dp-ucp01.am2.cloudra.local:443 --ucp-username admin --ucp-password {{ vm_pw }} --ucp-insecure-tls {{ hostvars['dp-dtr01']['flag']['stdout'] }}
+      when: inventory_hostname in ['dp-dtr02','dp-dtr03']

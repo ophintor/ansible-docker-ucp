@@ -70,3 +70,6 @@
 
     - name: Update /etc/hosts
       copy: src=files/hosts dest=/etc/hosts
+
+    - name: Update DNS settings
+      copy: src=files/resolv.conf dest=/etc/resolv.conf

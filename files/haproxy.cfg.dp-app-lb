@@ -84,9 +84,9 @@ frontend  public
 
 backend servers
     balance     roundrobin
-    server  dh-worker1 10.10.174.69:443 check
-    server  dh-worker2 10.10.174.70:443 check
-    server  dh-worker3 10.10.174.71:443 check
+    server  dp-worker01 10.10.174.69:443 check
+    server  dp-worker02 10.10.174.70:443 check
+    server  dp-worker03 10.10.174.71:443 check
 
 #---------------------------------------------------------------------
 # round robin balancing between the various backends

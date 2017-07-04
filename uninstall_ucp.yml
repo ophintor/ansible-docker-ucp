@@ -1,0 +1,19 @@
+---
+- hosts: ucp,dtr
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Uninstall UCP
+      command: docker run --rm -v /var/run/docker.sock:/var/run/docker.sock --name ucp docker/ucp:2.1.4 uninstall-ucp
+      when: inventory_hostname in groups.ucp
+
+    - name: Uninstall DTR
+      command: docker run --rm docker/dtr:2.2.5 destroy --ucp-insecure-tls
+      when: inventory_hostname in groups.dtr
+
+    

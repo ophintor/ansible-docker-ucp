@@ -84,12 +84,9 @@ frontend  public
 
 backend servers
     balance     roundrobin
-#    server  dh-ucp1 10.10.174.91:443 check
-#    server  dh-ucp2 10.10.174.92:443 check
-#    server  dh-ucp3 10.10.174.93:443 check
-    {% for host in groups.lbs %}
-        server {{ host }} {{ hostvars[host]['ansible_ens192'].ipv4.address }}:443 check
-    {% endfor %}
+    server  dp-ucp01 10.10.174.63:443 check
+    server  dp-ucp02 10.10.174.64:443 check
+    server  dp-ucp03 10.10.174.65:443 check
 
 #---------------------------------------------------------------------
 # round robin balancing between the various backends
@@ -100,3 +97,4 @@ backend servers
 #    server  app2 127.0.0.1:5002 check
 #    server  app3 127.0.0.1:5003 check
 #    server  app4 127.0.0.1:5004 check
+

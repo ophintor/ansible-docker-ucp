@@ -84,9 +84,9 @@ frontend  public
 
 backend servers
     balance     roundrobin
-    server  dh-dtr1 10.10.174.66:443 check
-    server  dh-dtr2 10.10.174.67:443 check
-    server  dh-dtr3 10.10.174.68:443 check
+    server  dp-dtr01 10.10.174.66:443 check
+    server  dp-dtr02 10.10.174.67:443 check
+    server  dp-dtr03 10.10.174.68:443 check
 
 
 #---------------------------------------------------------------------

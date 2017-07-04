@@ -1,22 +1,22 @@
 [ucp]
-dp_ucp01 ip_addr='10.10.174.63/22'
-dp_ucp02 ip_addr='10.10.174.64/22'
-dp_ucp03 ip_addr='10.10.174.65/22'
+dp-ucp01 ip_addr='10.10.174.63/22'
+dp-ucp02 ip_addr='10.10.174.64/22'
+dp-ucp03 ip_addr='10.10.174.65/22'
 
 [dtr]
-dp_dtr01 ip_addr='10.10.174.66/22'
-dp_dtr02 ip_addr='10.10.174.67/22'
-dp_dtr03 ip_addr='10.10.174.68/22'
+dp-dtr01 ip_addr='10.10.174.66/22'
+dp-dtr02 ip_addr='10.10.174.67/22'
+dp-dtr03 ip_addr='10.10.174.68/22'
 
 [worker]
-dp_worker01 ip_addr='10.10.174.69/22'
-dp_worker02 ip_addr='10.10.174.70/22'
-dp_worker03 ip_addr='10.10.174.71/22'
+dp-worker01 ip_addr='10.10.174.69/22'
+dp-worker02 ip_addr='10.10.174.70/22'
+dp-worker03 ip_addr='10.10.174.71/22'
 
 [lbs]
-dp_ucp_lb ip_addr='10.10.174.72/22'
-dp_dtr_lb ip_addr='10.10.174.73/22'
-dp_app_lb ip_addr='10.10.174.74/22'
+dp-ucp-lb ip_addr='10.10.174.72/22'
+dp-dtr-lb ip_addr='10.10.174.73/22'
+dp-app-lb ip_addr='10.10.174.74/22'
 
 [docker:children]
 ucp

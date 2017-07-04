@@ -1,16 +1,15 @@
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 
-10.10.174.61	dp-ansible2.cloudra.local dp-ansible2
-10.10.174.63 dp_ucp01
-10.10.174.64 dp_ucp02
-10.10.174.65 dp_ucp03
-10.10.174.66 dp_dtr01
-10.10.174.67 dp_dtr02
-10.10.174.68 dp_dtr03
-10.10.174.69 dp_worker01
-10.10.174.70 dp_worker02
-10.10.174.71 dp_worker03
-10.10.174.72 dp_ucp_lb
-10.10.174.73 dp_dtr_lb
-10.10.174.74 dp_app_lb
-
+10.10.174.61 dp-ansible2.cloudra.local dp-ansible2
+10.10.174.63 dp-ucp01.am2.cloudra.local dp-ucp01
+10.10.174.64 dp-ucp02.am2.cloudra.local dp-ucp02
+10.10.174.65 dp-ucp03.am2.cloudra.local dp-ucp03
+10.10.174.66 dp-dtr01.am2.cloudra.local dp-dtr01
+10.10.174.67 dp-dtr02.am2.cloudra.local dp-dtr02
+10.10.174.68 dp-dtr03.am2.cloudra.local dp-dtr03
+10.10.174.69 dp-worker01.am2.cloudra.local dp-worker01
+10.10.174.70 dp-worker02.am2.cloudra.local dp-worker02
+10.10.174.71 dp-worker03.am2.cloudra.local dp-worker03
+10.10.174.72 dp-ucp-lb.am2.cloudra.local dp-ucp-lb
+10.10.174.73 dp-dtr-lb.am2.cloudra.local dp-dtr-lb
+10.10.174.74 dp-app-lb.am2.cloudra.local dp-app-lb
