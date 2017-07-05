@@ -1,4 +1,5 @@
 ---
+# vcenter information
 vcenter_hostname: 'dhvc.am2.cloudra.local'
 vcenter_user: 'administrator@vsphere.local'
 vcenter_pass: 'CloudLab1!'
@@ -7,14 +8,16 @@ cluster: 'Engineering'
 esxi_host: 'dh01.am2.cloudra.local'
 notes: 'Created by Ansible'
 vm_template: 'dp-template'
-#lb_template: 'dp_rhel_template'
-ISO_Datastore: 'docker_share_data2'
-#RHEL_ISO: 'ISO_Images/RHEL-7.3-20161019.0-Server-x86_64-dvd1.iso'
-vm_pw: 'uno.dos.tres.456'
+datastores: ['docker_share_data1','docker_share_data2']
+
+# OS-related
 domain_name: 'am2.cloudra.local'
+vm_pw: 'uno.dos.tres.456'
 ntp_server: '10.12.2.1'
-rhel_version: '7.3'
-docker_ee_url: 'https://storebits.docker.com/ee/linux/sub-bee89908-9360-4f5c-a3e2-e059a8f88605'
 proxy_host: '15.184.4.2'
 proxy_port: '8080'
-datastores: ['docker_share_data1','docker_share_data2']
+no_proxy: '10.10.*,*.am2.cloudra.local'
+
+# Docker related
+docker_ee_url: 'https://storebits.docker.com/ee/linux/sub-bee89908-9360-4f5c-a3e2-e059a8f88605'
+rhel_version: '7.3'

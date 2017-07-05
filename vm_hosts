@@ -1,3 +1,9 @@
+[ucp-main]
+dp-ucp01 ip_addr='10.10.174.63/22'
+
+[dtr-main]
+dp-dtr01 ip_addr='10.10.174.66/22'
+
 [ucp]
 dp-ucp01 ip_addr='10.10.174.63/22'
 dp-ucp02 ip_addr='10.10.174.64/22'
