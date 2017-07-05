@@ -8,8 +8,16 @@
     - vars.yml
 
   tasks:
-    - name: Open required ports for UCP
+    - name: Open required ports for Workers
       command: firewall-cmd --permanent --zone=public --add-port=443/tcp --add-port=2377/tcp --add-port=4789/tcp --add-port=4789/udp --add-port=7946/tcp --add-port=7946/udp --add-port=12376/tcp
 
     - name: Reload firewalld configuration
       command: firewall-cmd --reload
+
+    - name: Get worker token
+      include_vars:
+        file: /tmp/worker_token
+        name: add_worker
+
+    - name: Add Worker nodes to the swarm
+      command: "{{ add_worker.token }}"

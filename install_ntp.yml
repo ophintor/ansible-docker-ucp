@@ -1,0 +1,31 @@
+---
+- hosts: all
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Install NTP
+      yum:
+        name: ntp
+        state: latest
+      environment:
+        http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
+        https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
+
+    - name: Updating ntp.conf
+      template:
+        src: templates/ntp.conf.j2
+        dest: /etc/ntp.conf
+        owner: root
+        group: root
+        mode: 0644        
+
+    - name: Enable and start NTP service
+      systemd:
+        name: ntpd
+        enabled: yes
+        state: started

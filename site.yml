@@ -7,6 +7,11 @@
 - include: config_networking.yml
 - include: distribute_keys.yml
 - include: install_haproxy.yml
+- include: install_ntp.yml
+- include: install_docker.yml
 - include: config_lvs.yml
 - include: start_docker.yml
+- include: docker_post_config.yml
 - include: install_ucp_nodes.yml
+- include: install_dtr_nodes.yml
+- include: install_worker_nodes.yml

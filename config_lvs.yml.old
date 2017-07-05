@@ -1,5 +1,5 @@
 ---
-- hosts: test
+- hosts: docker
   gather_facts: false
   become_user: root
   become: true
@@ -17,10 +17,11 @@
     - name: Set LVM on partition
       command: parted -s -a optimal /dev/sdb set 1 lvm on
 
-    - name: Create Docker VG
-      lvg:
-        vg: docker
-        pvs: /dev/sdb1
+    - name: Create physical volume
+      command: pvcreate -ff -y /dev/sdb1
+
+    - name: Create volume group
+      command: vgcreate docker /dev/sdb1
 
     - name: Create thinpool LV
       command: lvcreate --wipesignatures y -n thinpool docker -l 95%VG
@@ -31,19 +32,8 @@
     - name: LV convert
       command: lvconvert -y  --zero n -c 512K  --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta
 
-    - name: Config thinpool profile
-      copy:  src=files/docker-thinpool.profile dest=/etc/lvm/profile/docker-thinpool.profile
-
     - name: LV change
       command: lvchange --metadataprofile docker-thinpool docker/thinpool
 
     - name: LV monitor
       command: lvs -o+seg_monitor
-
-    - name: Create /etc/docker directory
-      file:
-        path: /etc/docker
-        state: directory
-
-    - name: Config Docker daemon
-      copy: src=files/daemon.json dest=/etc/docker/daemon.json

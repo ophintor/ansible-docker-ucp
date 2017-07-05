@@ -23,6 +23,11 @@
         vm_hardware:
           memory_mb: 8192
           num_cpus: 2
+        vm_disk:
+          disk2:
+            size_gb: 300
+            type: thin
+            datastore: "{{ datastores | random }}"
         esxi:
           datacenter:  "{{ datacenter }}"
           hostname: "{{ esxi_host }}"
@@ -42,6 +47,11 @@
         vm_hardware:
           memory_mb: 16384
           num_cpus: 4
+        vm_disk:
+          disk2:
+            size_gb: 300
+            type: thin
+            datastore: "{{ datastores | random }}"
         esxi:
           datacenter:  "{{ datacenter }}"
           hostname: "{{ esxi_host }}"

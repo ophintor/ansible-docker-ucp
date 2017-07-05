@@ -1,5 +1,5 @@
 ---
-- hosts: ucp,dtr,worker
+- hosts: ucp
   gather_facts: false
   become_user: root
   become: true
@@ -10,11 +10,6 @@
   tasks:
     - name: Open required ports for UCP
       command: firewall-cmd --permanent --zone=public --add-port=443/tcp --add-port=2376/tcp --add-port=2377/tcp --add-port=4789/tcp --add-port=4789/udp --add-port=7946/tcp --add-port=7946/udp --add-port=12376/tcp --add-port=12379/tcp --add-port=12380/tcp --add-port=12381/tcp --add-port=12382/tcp --add-port=12383/tcp --add-port=12384/tcp --add-port=12385/tcp --add-port=12386/tcp --add-port=12387/tcp
-      when: inventory_hostname in groups.ucp
-
-    - name: Open required ports for DTR
-      command: firewall-cmd --permanent --zone=public --add-port=80/tcp --add-port=443/tcp --add-port=2377/tcp --add-port=4789/tcp --add-port=4789/udp --add-port=7946/tcp --add-port=7946/udp --add-port=12376/tcp
-      when: inventory_hostname in ['groups.dtr','groups.worker']
 
     - name: Reload firewalld configuration
       command: firewall-cmd --reload

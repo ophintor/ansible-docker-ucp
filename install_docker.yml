@@ -1,0 +1,52 @@
+---
+- hosts: ucp,dtr,worker
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Install dependencies
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - policycoreutils-python 
+        - libseccomp 
+        - libtool-ltdl 
+        - yum-utils
+        - NetworkManager-glib 
+        - nm-connection-editor
+        - libsemanage-python 
+        - policycoreutils-python
+      environment:
+        http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
+        https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
+
+    - name: Set Docker url
+      shell: echo {{ docker_ee_url }}/rhel > /etc/yum/vars/dockerurl
+
+    - name: Set Docker version
+      shell: echo {{ rhel_version }}  > /etc/yum/vars/dockerosversion
+
+    - name: Add Docker repository
+      command: yum-config-manager --add-repo {{ docker_ee_url }}/rhel/docker-ee.repo
+      environment:
+        http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
+        https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
+
+    - name: Make yum cache fast
+      command: yum makecache fast
+      environment:
+        http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
+        https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
+
+    - name: Install Docker
+      yum:
+        name: docker-ee
+        state: latest
+      environment:
+        http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
+        https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
