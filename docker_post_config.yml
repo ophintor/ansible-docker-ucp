@@ -1,5 +1,5 @@
 ---
-- hosts: test
+- hosts: docker
   gather_facts: false
   become_user: root
   become: true
