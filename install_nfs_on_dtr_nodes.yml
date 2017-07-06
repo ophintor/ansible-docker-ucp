@@ -1,0 +1,74 @@
+---
+- hosts: dtr
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Install NFS server
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - rpcbind
+        - nfs-utils
+      environment:
+        http_proxy: http://15.184.4.2:8080
+        https_proxy: https://15.184.4.2:8080
+      when: inventory_hostname == 'dp-dtr01'
+
+    - name: Install NFS client
+      yum:
+        name: nfs-utils
+        state: latest
+      environment:
+        http_proxy: http://15.184.4.2:8080
+        https_proxy: https://15.184.4.2:8080
+      when: inventory_hostname != 'dp-dtr01'
+
+    - name: Create folder
+      file:
+        path: /docker-images
+        state: directory
+        mode: 0777
+
+    - name: Modify exports file on NFS server
+      blockinfile:
+        path: /etc/exports
+        block: |
+          /docker-images dp-dtr*(rw,sync,no_root_squash,no_all_squash)
+      when: inventory_hostname == 'dp-dtr01'
+
+    - name: Refresh exportfs
+      command: exportfs -a
+      when: inventory_hostname == 'dp-dtr01'
+
+    - name: Enable and start NFS services on server
+      systemd:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      with_items:
+        - rpcbind
+        - nfs-server
+      when: inventory_hostname == 'dp-dtr01'
+
+    - name: Open http and https ports
+      command: firewall-cmd --permanent --zone=public --add-port=2049/tcp
+      when: inventory_hostname == 'dp-dtr01'
+
+    - name: Reload firewalld
+      command: firewall-cmd --reload
+      when: inventory_hostname == 'dp-dtr01'
+
+    - name: Mount NFS share
+      mount: 
+        path: /docker-images
+        src: dp-dtr01.{{ domain_name }}:/docker-images 
+        fstype: nfs
+        state: mounted
+      when: inventory_hostname != 'dp-dtr01'
+
