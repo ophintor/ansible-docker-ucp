@@ -23,7 +23,7 @@
       command: "{{ add_worker.token }}"
 
     - name: Install first DTR node
-      command: docker run --rm docker/dtr:2.2.5 install --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-insecure-tls --dtr-external-url https://dp-dtr-lb.am2.cloudra.local:443 --ucp-url https://dp-ucp01.am2.cloudra.local --ucp-username admin --ucp-password {{ vm_pw }}
+      command: docker run --rm docker/dtr:2.2.5 install --nfs-storage-url nfs://{{ inventory_hostname }}.{{ domain_name}}/docker-images --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-insecure-tls --dtr-external-url https://dp-dtr-lb.am2.cloudra.local:443 --ucp-url https://dp-ucp01.am2.cloudra.local --ucp-username admin --ucp-password {{ vm_pw }}
       when: inventory_hostname == 'dp-dtr01'
       register: dtrlog
       until: dtrlog.rc == 0
@@ -39,6 +39,6 @@
       command: docker run --rm docker/dtr:2.2.5 join --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-url https://dp-ucp01.am2.cloudra.local:443 --ucp-username admin --ucp-password {{ vm_pw }} --ucp-insecure-tls {{ hostvars['dp-dtr01']['flag']['stdout'] }}
       register: task_result
       until: task_result.rc == 0
-      retries: 10
-      delay: 30
+      retries: 100
+      delay: 60
       when: inventory_hostname != 'dp-dtr01'

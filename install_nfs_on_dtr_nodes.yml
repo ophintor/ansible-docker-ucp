@@ -54,21 +54,15 @@
       with_items:
         - rpcbind
         - nfs-server
+        - nfs-lock
+        - nfs-idmap
       when: inventory_hostname == 'dp-dtr01'
 
-    - name: Open http and https ports
-      command: firewall-cmd --permanent --zone=public --add-port=2049/tcp
+    - name: Open required ports
+      command: firewall-cmd --permanent --zone=public --add-port=2049/tcp --add-port=2049/udp --add-port=111/tcp --add-port=111/udp --add-port=54302/tcp --add-port=54302/udp --add-port=20048/tcp --add-port=20048/udp --add-port=46666/tcp --add-port=46666/udp --add-port=42955/tcp --add-port=42955/udp --add-port=875/tcp --add-port=875/udp
       when: inventory_hostname == 'dp-dtr01'
 
     - name: Reload firewalld
       command: firewall-cmd --reload
       when: inventory_hostname == 'dp-dtr01'
-
-    - name: Mount NFS share
-      mount: 
-        path: /docker-images
-        src: dp-dtr01.{{ domain_name }}:/docker-images 
-        fstype: nfs
-        state: mounted
-      when: inventory_hostname != 'dp-dtr01'
 
