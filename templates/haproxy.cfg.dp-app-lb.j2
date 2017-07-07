@@ -10,10 +10,10 @@ defaults
         timeout server 50000
 ### frontends
 # Optional HAProxy Stats Page accessible at http://<host-ip>:8181/haproxy?stats
-frontend app_stats
-        mode http
-        bind 0.0.0.0:8181
-        default_backend app_stats
+#frontend app_stats
+#        mode http
+#        bind 0.0.0.0:8181
+#        default_backend app_stats
 frontend app_80
         mode tcp
         bind 0.0.0.0:80
@@ -32,12 +32,12 @@ backend app_stats
 backend app_upstream_servers_80
         mode tcp
         option httpchk GET /health HTTP/1.1\r\nHost:\ <DTR_FQDN>
-	{% for host in groups.app %}
+	{% for host in groups.worker %}
 		server {{ host }} {{ host }}.{{ domain_name }}:80 check weight 100
 	{% endfor %}
 backend app_upstream_servers_443
         mode tcp
         option httpchk GET /health HTTP/1.1\r\nHost:\ <DTR_FQDN>
-        {% for host in groups.app %}
+        {% for host in groups.worker %}
                 server {{ host }} {{ host }}.{{ domain_name }}:443 check weight 100 check-ssl verify none
         {% endfor %}

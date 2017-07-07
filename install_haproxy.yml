@@ -18,7 +18,7 @@
 
     - name: Updating haproxy.cfg
       template:
-        src: files/haproxy.cfg.{{ inventory_hostname }}.j2
+        src: templates/haproxy.cfg.{{ inventory_hostname }}.j2
         dest: /etc/haproxy/haproxy.cfg
         owner: root
         group: root
@@ -31,7 +31,7 @@
         state: started
 
     - name: Open http and https ports
-      command: firewall-cmd --permanent --zone=public --add-port=80/tcp --add-port=443/tcp
+      command: firewall-cmd --permanent --zone=public --add-port=80/tcp --add-port=443/tcp --add-port=8181/tcp
 
     - name: Reload firewalld
       command: firewall-cmd --reload

@@ -10,10 +10,10 @@ defaults
         timeout server 50000
 ### frontends
 # Optional HAProxy Stats Page accessible at http://<host-ip>:8181/haproxy?stats
-frontend dtr_stats
-        mode http
-        bind 0.0.0.0:8181
-        default_backend dtr_stats
+#frontend dtr_stats
+#        mode http
+#        bind 0.0.0.0:8181
+#        default_backend dtr_stats
 frontend dtr_80
         mode tcp
         bind 0.0.0.0:80
