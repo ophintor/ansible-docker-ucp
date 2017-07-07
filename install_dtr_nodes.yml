@@ -24,7 +24,7 @@
       command: "{{ add_worker.token }}"
 
     - name: Install first DTR node
-      command: docker run --rm docker/dtr:{{ dtr_version }} install --nfs-storage-url nfs://{{ inventory_hostname }}.{{ domain_name}}{{ images_folder }} --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-insecure-tls --dtr-external-url https://dp-dtr-lb.am2.cloudra.local:443 --ucp-url https://dp-ucp01.am2.cloudra.local --ucp-username admin --ucp-password {{ vm_pw }}
+      command: docker run --rm docker/dtr:{{ dtr_version }} install --http-proxy http://{{ proxy_host }}:{{ proxy_port }} --https-proxy https://{{ proxy_host }}:{{ proxy_port }} --no-proxy={{ no_proxy }} --nfs-storage-url nfs://{{ inventory_hostname }}.{{ domain_name}}{{ images_folder }} --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-insecure-tls --dtr-external-url https://dp-dtr-lb.am2.cloudra.local:443 --ucp-url https://dp-ucp01.am2.cloudra.local --ucp-username admin --ucp-password {{ vm_pw }}
       when: inventory_hostname in groups.dtr_main
       register: dtrlog
       until: dtrlog.rc == 0

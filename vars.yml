@@ -29,7 +29,7 @@ domain_name: 'am2.cloudra.local'
 ntp_server: '10.12.2.1'
 proxy_host: '15.184.4.2'
 proxy_port: '8080'
-no_proxy: '10.10.*,*.am2.cloudra.local'
+no_proxy: 'localhost,127.0.0.1,10.10.,.am2.cloudra.local'
 
 # Docker related
 docker_ee_url: 'https://storebits.docker.com/ee/linux/sub-bee89908-9360-4f5c-a3e2-e059a8f88605'
