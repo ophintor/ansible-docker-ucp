@@ -16,22 +16,22 @@
         - rpcbind
         - nfs-utils
       environment:
-        http_proxy: http://15.184.4.2:8080
-        https_proxy: https://15.184.4.2:8080
-      when: inventory_hostname == 'dp-dtr01'
+        http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
+        https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
+      when: inventory_hostname in groups.dtr-main
 
     - name: Install NFS client
       yum:
         name: nfs-utils
         state: latest
       environment:
-        http_proxy: http://15.184.4.2:8080
-        https_proxy: https://15.184.4.2:8080
-      when: inventory_hostname != 'dp-dtr01'
+        http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
+        https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
+      when: inventory_hostname not in groups.dtr-main
 
     - name: Create folder
       file:
-        path: /docker-images
+        path: "{{ images_folder }}"
         state: directory
         mode: 0777
 
@@ -39,7 +39,7 @@
       blockinfile:
         path: /etc/exports
         block: |
-          /docker-images dp-dtr*(rw,sync,no_root_squash,no_all_squash)
+          {{ images_folder }} dp-dtr*(rw,sync,no_root_squash,no_all_squash)
       when: inventory_hostname == 'dp-dtr01'
 
     - name: Refresh exportfs
@@ -65,4 +65,3 @@
     - name: Reload firewalld
       command: firewall-cmd --reload
       when: inventory_hostname == 'dp-dtr01'
-

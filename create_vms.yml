@@ -7,8 +7,10 @@
 
   vars_files:
     - vars.yml
+    - enc_vars.yml
 
   tasks:
+#    - debug: msg="My Secret value is {{vcenter_pass | replace('\n', '')}}"
     - name: Create all VMs
       vsphere_guest:
         vcenter_hostname: "{{ vcenter_hostname }}"
@@ -20,7 +22,6 @@
         template_src: "{{ vm_template }}"
         power_on_after_clone: no
         vm_extra_config:
-          notes: "{{ notes }}"
           folder: 'dp'
         esxi:
           datacenter: "{{ datacenter }}"

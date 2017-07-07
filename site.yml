@@ -2,7 +2,7 @@
 # This playbook will create a Docker UCP environment
 
 - include: create_vms.yml
-- include: change_vm_specs.yml
+- include: config_vm_specs.yml
 - include: power_on_guests.yml
 - include: config_networking.yml
 - include: distribute_keys.yml

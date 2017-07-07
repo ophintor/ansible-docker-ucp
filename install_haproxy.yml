@@ -13,12 +13,12 @@
         name: haproxy
         state: latest
       environment:
-        http_proxy: http://15.184.4.2:8080
-        https_proxy: https://15.184.4.2:8080
+        http_proxy: "http://{{ proxy_host }}:{{ proxy_port }}"
+        https_proxy: "https://{{ proxy_host }}:{{ proxy_port }}"
 
     - name: Updating haproxy.cfg
-      copy:
-        src: files/haproxy.cfg.{{ inventory_hostname }}
+      template:
+        src: files/haproxy.cfg.{{ inventory_hostname }}.j2
         dest: /etc/haproxy/haproxy.cfg
         owner: root
         group: root

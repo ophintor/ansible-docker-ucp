@@ -7,6 +7,7 @@
 
   vars_files:
     - vars.yml
+    - enc_vars.yml
 
   tasks:
     - name: Power on guests

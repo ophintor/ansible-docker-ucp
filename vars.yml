@@ -2,17 +2,30 @@
 # vcenter information
 vcenter_hostname: 'dhvc.am2.cloudra.local'
 vcenter_user: 'administrator@vsphere.local'
-vcenter_pass: 'CloudLab1!'
 datacenter: 'PCE-DC'
 cluster: 'Engineering'
 esxi_host: 'dh01.am2.cloudra.local'
-notes: 'Created by Ansible'
 vm_template: 'dp-template'
 datastores: ['docker_share_data1','docker_share_data2']
+ucp_ram: 8192
+ucp_cpus: 2
+ucp_disk2_size: 200
+dtr_ram: 16384
+dtr_cpus: 4
+dtr_disk2_size: 200
+worker_ram: 16384
+worker_cpus: 4
+worker_disk2_size: 200
+lb_ram: 4096
+lb_cpus: 2
+disk2: '/dev/sdb'
+disk2_part: '/dev/sdb1'
+vsphere_plugin_version: 'latest' # was 0.12
 
 # OS-related
+nic_name: 'ens192'
+gateway: '10.10.172.1'
 domain_name: 'am2.cloudra.local'
-vm_pw: 'uno.dos.tres.456'
 ntp_server: '10.12.2.1'
 proxy_host: '15.184.4.2'
 proxy_port: '8080'
@@ -21,3 +34,6 @@ no_proxy: '10.10.*,*.am2.cloudra.local'
 # Docker related
 docker_ee_url: 'https://storebits.docker.com/ee/linux/sub-bee89908-9360-4f5c-a3e2-e059a8f88605'
 rhel_version: '7.3'
+dtr_version: 'latest'
+ucp_version: 'latest'
+images_folder: '/docker-images'

@@ -7,6 +7,7 @@
 
   vars_files:
     - vars.yml
+    - enc_vars.yml
 
   tasks:
     - name: Reconfigure CPU and RAM specs on UCP hosts
@@ -21,11 +22,11 @@
           vcpu.hotadd: yes
           mem.hotadd: yes
         vm_hardware:
-          memory_mb: 8192
-          num_cpus: 2
+          memory_mb: "{{ ucp_ram }}"
+          num_cpus: "{{ ucp_cpus }}"
         vm_disk:
           disk2:
-            size_gb: 200
+            size_gb: "{{ ucp_disk2_size }}"
             type: thin
             datastore: "{{ datastores | random }}"
         esxi:
@@ -45,11 +46,11 @@
           vcpu.hotadd: yes
           mem.hotadd: yes
         vm_hardware:
-          memory_mb: 16384
-          num_cpus: 4
+          memory_mb: "{{ dtr_ram }}"
+          num_cpus: "{{ dtr_cpus }}"
         vm_disk:
           disk2:
-            size_gb: 200
+            size_gb: "{{ dtr_disk2_size }}"
             type: thin
             datastore: "{{ datastores | random }}"
         esxi:
@@ -69,8 +70,8 @@
           vcpu.hotadd: yes
           mem.hotadd: yes
         vm_hardware:
-          memory_mb: 4096
-          num_cpus: 2
+          memory_mb: "{{ lb_ram }}"
+          num_cpus: "{{ lb_cpus }}"
         esxi:
           datacenter:  "{{ datacenter }}"
           hostname: "{{ esxi_host }}"
