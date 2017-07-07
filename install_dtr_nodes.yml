@@ -24,8 +24,8 @@
       command: "{{ add_worker.token }}"
 
     - name: Install first DTR node
-      command: docker run --rm docker/dtr:{{ dtr_version }} install --nfs-storage-url nfs://{{ inventory_hostname }}.{{ domain_name}}{{ images_folder }} --dtr-storage-volume {{ images_folder }} --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-insecure-tls --dtr-external-url https://dp-dtr-lb.am2.cloudra.local:443 --ucp-url https://dp-ucp01.am2.cloudra.local --ucp-username admin --ucp-password {{ vm_pw }}
-      when: inventory_hostname in groups.dtr-main
+      command: docker run --rm docker/dtr:{{ dtr_version }} install --nfs-storage-url nfs://{{ inventory_hostname }}.{{ domain_name}}{{ images_folder }} --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-insecure-tls --dtr-external-url https://dp-dtr-lb.am2.cloudra.local:443 --ucp-url https://dp-ucp01.am2.cloudra.local --ucp-username admin --ucp-password {{ vm_pw }}
+      when: inventory_hostname in groups.dtr_main
       register: dtrlog
       until: dtrlog.rc == 0
       retries: 10
@@ -33,7 +33,7 @@
 
     - name: Grab DTR flag from output
       shell: echo "{{ dtrlog.stdout }}" | grep 'You can use flag'| cut -d "'" -f2
-      when: inventory_hostname in groups.dtr-main
+      when: inventory_hostname in groups.dtr_main
       register: flag
 
     - name: Add DTR nodes
@@ -42,4 +42,4 @@
       until: task_result.rc == 0
       retries: 100
       delay: 60
-      when: inventory_hostname not in groups.dtr-main
+      when: inventory_hostname not in groups.dtr_main

@@ -23,22 +23,22 @@
     - name: Install swarm leader and first UCP node
       command: docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp:{{ ucp_version }} install --host-address {{ ip_addr | ipaddr('address') }} --admin-username=admin --admin-password={{ vm_pw }} --san dp-ucp-lb.am2.cloudra.local --san dp-ucp01.am2.cloudra.local --san dp-ucp02.am2.cloudra.local --san dp-ucp03.am2.cloudra.local --san 10.10.174.63 --san 10.10.174.64 --san 10.10.174.65
       register: output
-      when: inventory_hostname in groups.ucp-main
+      when: inventory_hostname in groups.ucp_main
       failed_when: output.rc > 1
 
     - name: Get swarm manager token
       shell: echo `docker swarm join-token manager` | cut -f2 -d':' | sed 's|\\||g'
       register: manager_token
-      when: inventory_hostname in groups.ucp-main
+      when: inventory_hostname in groups.ucp_main
 
     - name: Get swarm worker token
       shell: echo `docker swarm join-token worker` | cut -f2 -d':' | sed 's|\\||g'
       register: worker_token
-      when: inventory_hostname in groups.ucp-main
+      when: inventory_hostname in groups.ucp_main
 
     - name: Save worker token
       local_action: copy content="token{{ ":" }} {{ hostvars['dp-ucp01']['worker_token']['stdout'] }}" dest=/tmp/worker_token
 
     - name: Add additional UCP nodes to the swarm
       command: "{{ hostvars['dp-ucp01']['manager_token']['stdout'] }}"
-      when: inventory_hostname not in groups.ucp-main
+      when: inventory_hostname not in groups.ucp_main

@@ -31,7 +31,7 @@
         state: started
 
     - name: Open http and https ports
-      command: firewall-cmd --permanent --zone=public --add-port=80/tcp --add-port=443/tcp --add-port=8181/tcp
+      command: firewall-cmd --permanent --zone=public --add-port=80/tcp --add-port=443/tcp
 
     - name: Reload firewalld
       command: firewall-cmd --reload

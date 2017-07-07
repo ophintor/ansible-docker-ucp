@@ -18,7 +18,7 @@
       environment:
         http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
         https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
-      when: inventory_hostname in groups.dtr-main
+      when: inventory_hostname in groups.dtr_main
 
     - name: Install NFS client
       yum:
@@ -27,7 +27,7 @@
       environment:
         http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
         https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
-      when: inventory_hostname not in groups.dtr-main
+      when: inventory_hostname not in groups.dtr_main
 
     - name: Create folder
       file:
