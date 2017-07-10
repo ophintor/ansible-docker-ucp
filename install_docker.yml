@@ -7,6 +7,8 @@
   vars_files:
     - vars.yml
 
+  environment: "{{ env }}"
+
   tasks:
     - name: Install dependencies
       yum:
@@ -21,9 +23,6 @@
         - nm-connection-editor
         - libsemanage-python 
         - policycoreutils-python
-      environment:
-        http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
-        https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
 
     - name: Set Docker url
       shell: echo {{ docker_ee_url }}/rhel > /etc/yum/vars/dockerurl
@@ -33,20 +32,9 @@
 
     - name: Add Docker repository
       command: yum-config-manager --add-repo {{ docker_ee_url }}/rhel/docker-ee.repo
-      environment:
-        http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
-        https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
-
-    - name: Make yum cache fast
-      command: yum makecache fast
-      environment:
-        http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
-        https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
 
     - name: Install Docker
       yum:
         name: docker-ee
         state: latest
-      environment:
-        http_proxy: http://{{ proxy_host }}:{{ proxy_port }}
-        https_proxy: https://{{ proxy_host }}:{{ proxy_port }}
+        update_cache: yes

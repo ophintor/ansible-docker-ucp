@@ -1,2 +1,2 @@
 [Service]
-Environment="HTTP_PROXY=http://{{ proxy_host }}:{{ proxy_port }}" "HTTPS_PROXY=https://{{ proxy_host }}:{{ proxy_port }}" NO_PROXY="{{ no_proxy }}"
+Environment="HTTP_PROXY={{ env.http_proxy }}" "HTTPS_PROXY={{ env.https_proxy }}" NO_PROXY="{{ env.no_proxy }}"
