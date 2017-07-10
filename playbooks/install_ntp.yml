@@ -5,7 +5,7 @@
   become: true
 
   vars_files:
-    - ../vars.yml
+    - ../group_vars/vars
 
   environment: "{{ env }}"
 

@@ -5,7 +5,9 @@ vcenter_user: 'administrator@vsphere.local'
 datacenter: 'PCE-DC'
 cluster: 'Engineering'
 esxi_host: 'dh01.am2.cloudra.local'
+vm_username: 'root'
 vm_template: 'dp-template'
+folder_name: 'dp'
 datastores: ['docker_share_data1','docker_share_data2']
 ucp_ram: 8192
 ucp_cpus: 2

@@ -5,13 +5,10 @@
   become: true
 
   vars_files:
-    - ../vars.yml
-    - ../enc_vars.yml
+    - ../group_vars/vars
+    - ../group_vars/vault
 
   vars:
-    #dtr_lb: "{{ hostvars[inventory_hostname]['groups']['dtr_lb'][0] }}.{{ domain_name }}"
-    #ucp_main: "{{ hostvars[inventory_hostname]['groups']['ucp_main'][0] }}.{{ domain_name }}"
-    #dtr_main: "{{ hostvars[inventory_hostname]['groups']['dtr_main'][0] }}"
     dtr_lb: "{{ groups['dtr_lb'][0] }}.{{ domain_name }}"
     ucp_main: "{{ groups['ucp_main'][0] }}.{{ domain_name }}"
     dtr_main: "{{ groups['dtr_main'][0] }}"
@@ -46,7 +43,7 @@
       register: flag
 
     - name: Add DTR nodes
-      command: docker run --rm docker/dtr:{{ dtr_version }} join --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-url https://{{ ucp_main }} --dtr-storage-volume {{ images_folder }} --ucp-username admin --ucp-password {{ vm_pw }} --ucp-insecure-tls {{ hostvars[dtr_main]['flag']['stdout'] }}
+      command: docker run --rm docker/dtr:{{ dtr_version }} join --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-url https://{{ ucp_main }} --ucp-username admin --ucp-password {{ vm_pw }} --ucp-insecure-tls {{ hostvars[dtr_main]['flag']['stdout'] }}
       register: task_result
       until: task_result.rc == 0
       retries: 100

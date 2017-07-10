@@ -5,8 +5,8 @@
   become: true
 
   vars_files:
-    - ../vars.yml
-    - ../enc_vars.yml
+    - ../group_vars/vars
+    - ../group_vars/vault
 
   vars:
     san_hosts: "--san {{ groups['ucp'] | join(' --san ') }}"
