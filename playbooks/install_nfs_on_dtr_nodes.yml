@@ -8,7 +8,8 @@
     - ../vars.yml
 
   vars:
-    dtr_main: "{{ hostvars[inventory_hostname]['groups']['dtr_main'][0] }}"
+    #dtr_main: "{{ hostvars[inventory_hostname]['groups']['dtr_main'][0] }}"
+    dtr_main: "{{ groups['dtr_main'][0] }}"
 
   environment: "{{ env }}"
 

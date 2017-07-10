@@ -9,9 +9,13 @@
     - ../enc_vars.yml
 
   vars:
-    dtr_lb: "{{ hostvars[inventory_hostname]['groups']['dtr_lb'][0] }}.{{ domain_name }}"
-    ucp_main: "{{ hostvars[inventory_hostname]['groups']['ucp_main'][0] }}.{{ domain_name }}"
-    dtr_main: "{{ hostvars[inventory_hostname]['groups']['dtr_main'][0] }}.{{ domain_name }}"
+    #dtr_lb: "{{ hostvars[inventory_hostname]['groups']['dtr_lb'][0] }}.{{ domain_name }}"
+    #ucp_main: "{{ hostvars[inventory_hostname]['groups']['ucp_main'][0] }}.{{ domain_name }}"
+    #dtr_main: "{{ hostvars[inventory_hostname]['groups']['dtr_main'][0] }}"
+    dtr_lb: "{{ groups['dtr_lb'][0] }}.{{ domain_name }}"
+    ucp_main: "{{ groups['ucp_main'][0] }}.{{ domain_name }}"
+    dtr_main: "{{ groups['dtr_main'][0] }}"
+
 
   tasks:
     - name: Open required ports for DTR

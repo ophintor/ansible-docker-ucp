@@ -8,7 +8,8 @@
     - ../vars.yml
 
   vars:
-    dtr_lb: "{{ hostvars[inventory_hostname]['groups']['dtr_lb'][0] }}.{{ domain_name }}"
+    #dtr_lb: "{{ hostvars[inventory_hostname]['groups']['dtr_lb'][0] }}.{{ domain_name }}"
+    dtr_lb: "{{ groups['dtr_lb'][0] }}.{{ domain_name }}"
   tasks:
     - name: Create Docker service directory
       file:
