@@ -5,7 +5,7 @@
   become: true
 
   vars_files:
-    - vars.yml
+    - ../vars.yml
 
   vars:
     dtr_main: "{{ hostvars[inventory_hostname]['groups']['dtr_main'][0] }}"

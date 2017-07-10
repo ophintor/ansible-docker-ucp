@@ -6,11 +6,10 @@
   become: true
 
   vars_files:
-    - vars.yml
-    - enc_vars.yml
+    - ../vars.yml
+    - ../enc_vars.yml
 
   tasks:
-#    - debug: msg="My Secret value is {{vcenter_pass | replace('\n', '')}}"
     - name: Create all VMs
       vsphere_guest:
         vcenter_hostname: "{{ vcenter_hostname }}"

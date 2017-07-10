@@ -1,0 +1,28 @@
+---
+- hosts: ucp
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - vars.yml
+    - enc_vars.yml
+
+  vars: 
+    ucp_lb: "{{ hostvars[inventory_hostname]['groups']['ucp_lb'][0] }}.{{ domain_name }}"
+    ucp1: "{{ hostvars[inventory_hostname]['groups']['ucp'][0] }}.{{ domain_name }}"
+    ucp2: "{{ hostvars[inventory_hostname]['groups']['ucp'][1] }}.{{ domain_name }}"
+    ucp3: "{{ hostvars[inventory_hostname]['groups']['ucp'][2] }}.{{ domain_name }}"
+    ucp1_ip: "{{ hostvars[hostvars[inventory_hostname]['groups']['ucp'][0]].ip_addr | ipaddr('address')}}"
+    ucp2_ip: "{{ hostvars[hostvars[inventory_hostname]['groups']['ucp'][1]].ip_addr | ipaddr('address')}}"
+    ucp3_ip: "{{ hostvars[hostvars[inventory_hostname]['groups']['ucp'][2]].ip_addr | ipaddr('address')}}"
+
+  tasks:
+    - debug: msg="{{ ucp1_ip }}"
+      when: inventory_hostname == 'dp-ucp01'
+    - debug: msg="{{ ucp2_ip }}"
+      when: inventory_hostname == 'dp-ucp01'
+    - debug: msg="{{ ucp3_ip }}"
+      when: inventory_hostname == 'dp-ucp01'
+    - debug: msg="docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp:{{ ucp_version }} install --host-address {{ ip_addr | ipaddr('address') }} --admin-username=admin --admin-password={{ vm_pw }} --san {{ ucp_lb }} --san {{ ucp1 }} --san {{ ucp2 }} --san {{ ucp3 }} --san {{ ucp1_ip }} --san {{ ucp2_ip }} --san {{ ucp3_ip }}"
+      when: inventory_hostname == 'dp-ucp01'

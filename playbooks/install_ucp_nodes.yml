@@ -5,17 +5,17 @@
   become: true
 
   vars_files:
-    - vars.yml
-    - enc_vars.yml
+    - ../vars.yml
+    - ../enc_vars.yml
 
-  vars: 
+  vars:
     ucp_lb: "{{ hostvars[inventory_hostname]['groups']['ucp_lb'][0] }}.{{ domain_name }}"
     ucp1: "{{ hostvars[inventory_hostname]['groups']['ucp'][0] }}.{{ domain_name }}"
     ucp2: "{{ hostvars[inventory_hostname]['groups']['ucp'][1] }}.{{ domain_name }}"
     ucp3: "{{ hostvars[inventory_hostname]['groups']['ucp'][2] }}.{{ domain_name }}"
-    ucp1_ip: "{{ hostvars[inventory_hostname]['groups']['ucp'][0].ip_addr }}.{{ domain_name }}"
-    ucp2_ip: "{{ hostvars[inventory_hostname]['groups']['ucp'][1].ip_addr }}.{{ domain_name }}"
-    ucp3_ip: "{{ hostvars[inventory_hostname]['groups']['ucp'][2].ip_addr }}.{{ domain_name }}"
+    ucp1_ip: "{{ hostvars[hostvars[inventory_hostname]['groups']['ucp'][0]].ip_addr | ipaddr('address')}}"
+    ucp2_ip: "{{ hostvars[hostvars[inventory_hostname]['groups']['ucp'][1]].ip_addr | ipaddr('address')}}"
+    ucp3_ip: "{{ hostvars[hostvars[inventory_hostname]['groups']['ucp'][2]].ip_addr | ipaddr('address')}}"
 
   tasks:
     - name: Open required ports for UCP
@@ -46,10 +46,8 @@
       when: inventory_hostname in groups.ucp_main
 
     - name: Save worker token
-      #local_action: copy content="token{{ ":" }} {{ hostvars['dp-ucp01']['worker_token']['stdout'] }}" dest=/tmp/worker_token
-      local_action: copy content="token{{ ":" }} {{ hostvars[inventory_hostname]['groups']['ucp_main'][0]['worker_token']['stdout'] }}" dest=/tmp/worker_token
+      local_action: copy content="token{{ ":" }} {{ hostvars[hostvars[inventory_hostname]['groups']['ucp_main'][0]]['worker_token']['stdout'] }}" dest=/tmp/worker_token
 
     - name: Add additional UCP nodes to the swarm
-      #command: "{{ hostvars['dp-ucp01']['manager_token']['stdout'] }}"
-      command: "{{ hostvars[inventory_hostname]['groups']['ucp_main'][0]['manager_token']['stdout'] }}"
+      command: "{{ hostvars[hostvars[inventory_hostname]['groups']['ucp_main'][0]]['manager_token']['stdout'] }}"
       when: inventory_hostname not in groups.ucp_main

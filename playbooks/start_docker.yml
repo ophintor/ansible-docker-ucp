@@ -5,7 +5,7 @@
   become: true
 
   vars_files:
-    - vars.yml
+    - ../vars.yml
 
   tasks:
     - name: Enable and start docker service

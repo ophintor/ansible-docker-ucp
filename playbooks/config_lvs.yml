@@ -5,7 +5,7 @@
   become: true
 
   vars_files:
-    - vars.yml
+    - ../vars.yml
 
   tasks:
     - name: Set partition label GPT
@@ -32,7 +32,7 @@
       command: lvconvert -y  --zero n -c 512K  --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta
 
     - name: Config thinpool profile
-      copy:  src=files/docker-thinpool.profile dest=/etc/lvm/profile/docker-thinpool.profile
+      copy:  src=../files/docker-thinpool.profile dest=/etc/lvm/profile/docker-thinpool.profile
 
     - name: LV change
       command: lvchange --metadataprofile docker-thinpool docker/thinpool
@@ -46,4 +46,4 @@
         state: directory
 
     - name: Config Docker daemon
-      copy: src=files/daemon.json dest=/etc/docker/daemon.json
+      copy: src=../files/daemon.json dest=/etc/docker/daemon.json

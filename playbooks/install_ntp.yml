@@ -5,7 +5,7 @@
   become: true
 
   vars_files:
-    - vars.yml
+    - ../vars.yml
 
   environment: "{{ env }}"
 
@@ -17,7 +17,7 @@
 
     - name: Updating ntp.conf
       template:
-        src: templates/ntp.conf.j2
+        src: ../templates/ntp.conf.j2
         dest: /etc/ntp.conf
         owner: root
         group: root

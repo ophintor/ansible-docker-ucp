@@ -5,7 +5,7 @@
   become: true
 
   vars_files:
-    - vars.yml
+    - ../vars.yml
 
   environment: "{{ env }}"
 
@@ -17,7 +17,7 @@
 
     - name: Updating haproxy.cfg
       template:
-        src: templates/haproxy.cfg.{{ inventory_hostname }}.j2
+        src: ../templates/haproxy.cfg.{{ inventory_hostname }}.j2
         dest: /etc/haproxy/haproxy.cfg
         owner: root
         group: root
