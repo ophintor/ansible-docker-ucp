@@ -8,4 +8,4 @@
     - vars.yml
 
   tasks:
-    - debug: msg="{{ hostvars[inventory_hostname]['groups']['dtr_lb'][0] }}"
+    - debug: msg="{{ hostvars[inventory_hostname]['groups']['ucp_main'][0]['manager_token']['stdout'] }}"

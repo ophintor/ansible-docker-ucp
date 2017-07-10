@@ -1,18 +1,18 @@
 ---
 # This playbook will create a Docker UCP environment
 
-- include: create_vms.yml
-- include: config_vm_specs.yml
-- include: power_on_guests.yml
-- include: config_networking.yml
-- include: distribute_keys.yml
-- include: install_haproxy.yml
-- include: install_ntp.yml
-- include: install_docker.yml
-- include: config_lvs.yml
-- include: start_docker.yml
-- include: docker_post_config.yml
-- include: install_nfs_on_dtr_nodes.yml
-- include: install_ucp_nodes.yml
-- include: install_dtr_nodes.yml
-- include: install_worker_nodes.yml
+- include: playbooks/create_vms.yml
+- include: playbooks/config_vm_specs.yml
+- include: playbooks/power_on_guests.yml
+- include: playbooks/config_networking.yml
+- include: playbooks/distribute_keys.yml
+- include: playbooks/install_haproxy.yml
+- include: playbooks/install_ntp.yml
+- include: playbooks/install_docker.yml
+- include: playbooks/config_lvs.yml
+- include: playbooks/start_docker.yml
+- include: playbooks/docker_post_config.yml
+- include: playbooks/install_nfs_on_dtr_nodes.yml
+- include: playbooks/install_ucp_nodes.yml
+- include: playbooks/install_dtr_nodes.yml
+- include: playbooks/install_worker_nodes.yml
