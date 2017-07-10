@@ -27,6 +27,7 @@ vsphere_plugin_version: 'latest' # was 0.12
 # Networking
 nic_name: 'ens192'
 gateway: '10.10.172.1'
+dns: '10.10.173.1'
 domain_name: 'am2.cloudra.local'
 ntp_server: '10.12.2.1'
 nfs_host_prefix: 'dp-dtr'
