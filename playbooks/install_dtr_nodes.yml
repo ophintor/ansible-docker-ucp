@@ -34,8 +34,8 @@
       when: inventory_hostname in groups.dtr_main
       register: dtrlog
       until: dtrlog.rc == 0
-      retries: 10
-      delay: 30
+      retries: 20
+      delay: 20
 
     - name: Grab DTR flag from output
       shell: echo "{{ dtrlog.stdout }}" | grep 'You can use flag'| cut -d "'" -f2
@@ -46,6 +46,6 @@
       command: docker run --rm docker/dtr:{{ dtr_version }} join --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-url https://{{ ucp_main }} --ucp-username admin --ucp-password {{ vm_pw }} --ucp-insecure-tls {{ hostvars[dtr_main]['flag']['stdout'] }}
       register: task_result
       until: task_result.rc == 0
-      retries: 100
-      delay: 60
+      retries: 20
+      delay: 20
       when: inventory_hostname not in groups.dtr_main

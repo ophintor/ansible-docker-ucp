@@ -9,6 +9,10 @@
     - ../group_vars/vault
 
   tasks:
+    - name: Wait for VMs to come up
+      local_action: 
+        wait_for host={{ inventory_hostname }} state=started
+
     - name: Change hostname
       local_action:
         module: vmware_vm_shell
