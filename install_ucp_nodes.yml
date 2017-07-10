@@ -8,6 +8,15 @@
     - vars.yml
     - enc_vars.yml
 
+  vars: 
+    ucp_lb: "{{ hostvars[inventory_hostname]['groups']['ucp_lb'][0] }}.{{ domain_name }}"
+    ucp1: "{{ hostvars[inventory_hostname]['groups']['ucp'][0] }}.{{ domain_name }}"
+    ucp2: "{{ hostvars[inventory_hostname]['groups']['ucp'][1] }}.{{ domain_name }}"
+    ucp3: "{{ hostvars[inventory_hostname]['groups']['ucp'][2] }}.{{ domain_name }}"
+    ucp1_ip: "{{ hostvars[inventory_hostname]['groups']['ucp'][0].ip_addr }}.{{ domain_name }}"
+    ucp2_ip: "{{ hostvars[inventory_hostname]['groups']['ucp'][1].ip_addr }}.{{ domain_name }}"
+    ucp3_ip: "{{ hostvars[inventory_hostname]['groups']['ucp'][2].ip_addr }}.{{ domain_name }}"
+
   tasks:
     - name: Open required ports for UCP
       command: firewall-cmd --permanent --zone=public --add-port=443/tcp --add-port=2376/tcp --add-port=2377/tcp --add-port=4789/tcp --add-port=4789/udp --add-port=7946/tcp --add-port=7946/udp --add-port=12376/tcp --add-port=12379/tcp --add-port=12380/tcp --add-port=12381/tcp --add-port=12382/tcp --add-port=12383/tcp --add-port=12384/tcp --add-port=12385/tcp --add-port=12386/tcp --add-port=12387/tcp
@@ -21,7 +30,7 @@
         state: restarted
 
     - name: Install swarm leader and first UCP node
-      command: docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp:{{ ucp_version }} install --host-address {{ ip_addr | ipaddr('address') }} --admin-username=admin --admin-password={{ vm_pw }} --san dp-ucp-lb.am2.cloudra.local --san dp-ucp01.am2.cloudra.local --san dp-ucp02.am2.cloudra.local --san dp-ucp03.am2.cloudra.local --san 10.10.174.63 --san 10.10.174.64 --san 10.10.174.65
+      command: docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp:{{ ucp_version }} install --host-address {{ ip_addr | ipaddr('address') }} --admin-username=admin --admin-password={{ vm_pw }} --san {{ ucp_lb }} --san {{ ucp1 }} --san {{ ucp2 }} --san {{ ucp3 }} --san {{ ucp1_ip }} --san {{ ucp2_ip }} --san {{ ucp3_ip }}
       register: output
       when: inventory_hostname in groups.ucp_main
       failed_when: output.rc > 1
@@ -37,8 +46,10 @@
       when: inventory_hostname in groups.ucp_main
 
     - name: Save worker token
-      local_action: copy content="token{{ ":" }} {{ hostvars['dp-ucp01']['worker_token']['stdout'] }}" dest=/tmp/worker_token
+      #local_action: copy content="token{{ ":" }} {{ hostvars['dp-ucp01']['worker_token']['stdout'] }}" dest=/tmp/worker_token
+      local_action: copy content="token{{ ":" }} {{ hostvars[inventory_hostname]['groups']['ucp_main'][0]['worker_token']['stdout'] }}" dest=/tmp/worker_token
 
     - name: Add additional UCP nodes to the swarm
-      command: "{{ hostvars['dp-ucp01']['manager_token']['stdout'] }}"
+      #command: "{{ hostvars['dp-ucp01']['manager_token']['stdout'] }}"
+      command: "{{ hostvars[inventory_hostname]['groups']['ucp_main'][0]['manager_token']['stdout'] }}"
       when: inventory_hostname not in groups.ucp_main

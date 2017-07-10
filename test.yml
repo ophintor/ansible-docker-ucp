@@ -1,0 +1,11 @@
+---
+- hosts: docker
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - debug: msg="{{ hostvars[inventory_hostname]['groups']['dtr_lb'][0] }}"

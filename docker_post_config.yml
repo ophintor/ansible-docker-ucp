@@ -7,6 +7,8 @@
   vars_files:
     - vars.yml
 
+  vars:
+    dtr_lb: "{{ hostvars[inventory_hostname]['groups']['dtr_lb'][0] }}.{{ domain_name }}"
   tasks:
     - name: Create Docker service directory
       file:
@@ -17,7 +19,7 @@
       template: src=templates/http-proxy.conf.j2 dest=/etc/systemd/system/docker.service.d/http-proxy.conf
 
     - name: Add insecure registry
-      command: sed -i 's|^ExecStart=.*|ExecStart=/usr/bin/dockerd --insecure-registry {{ hostvars[inventory_hostname]['groups']['dtr_lb'] }}.{{ domain_name }}|g' /usr/lib/systemd/system/docker.service
+      command: sed -i 's|^ExecStart=.*|ExecStart=/usr/bin/dockerd --insecure-registry {{ dtr_lb }}|g' /usr/lib/systemd/system/docker.service
 
     - name: Restart Docker
       systemd:

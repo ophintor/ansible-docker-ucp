@@ -1,5 +1,5 @@
 ---
-# vcenter information
+# VMs information
 vcenter_hostname: 'dhvc.am2.cloudra.local'
 vcenter_user: 'administrator@vsphere.local'
 datacenter: 'PCE-DC'
@@ -22,24 +22,21 @@ disk2: '/dev/sdb'
 disk2_part: '/dev/sdb1'
 vsphere_plugin_version: 'latest' # was 0.12
 
-# OS-related
+# Networking
 nic_name: 'ens192'
 gateway: '10.10.172.1'
 domain_name: 'am2.cloudra.local'
 ntp_server: '10.12.2.1'
-#proxy_host: '15.184.4.2'
-#proxy_port: '8080'
-#no_proxy: 'localhost,127.0.0.1,.cloudra.local,10.10.174.'
+nfs_host_prefix: 'dp-dtr'
 
-# Docker related
+# Docker settings
 docker_ee_url: 'https://storebits.docker.com/ee/linux/sub-bee89908-9360-4f5c-a3e2-e059a8f88605'
 rhel_version: '7.3'
 dtr_version: 'latest'
 ucp_version: 'latest'
 images_folder: '/docker-images'
-registry: 'dp-dtr-lb'
 
-# Proxy settings (comment out if not required)
+# Proxy settings (comment out / remove if not required)
 env:
   http_proxy: 'http://15.184.4.2:8080'
   https_proxy: 'https://15.184.4.2:8080'

@@ -7,6 +7,9 @@
   vars_files:
     - vars.yml
 
+  vars:
+    dtr_main: "{{ hostvars[inventory_hostname]['groups']['dtr_main'][0] }}"
+
   environment: "{{ env }}"
 
   tasks:
@@ -35,12 +38,12 @@
       blockinfile:
         path: /etc/exports
         block: |
-          {{ images_folder }} dp-dtr*(rw,sync,no_root_squash,no_all_squash)
-      when: inventory_hostname == 'dp-dtr01'
+          {{ images_folder }} {{ nfs_host_prefix }}*(rw,sync,no_root_squash,no_all_squash)
+      when: inventory_hostname == "{{ dtr_main }}"
 
     - name: Refresh exportfs
       command: exportfs -a
-      when: inventory_hostname == 'dp-dtr01'
+      when: inventory_hostname == "{{ dtr_main }}"
 
     - name: Enable and start NFS services on server
       systemd:
@@ -52,12 +55,12 @@
         - nfs-server
         - nfs-lock
         - nfs-idmap
-      when: inventory_hostname == 'dp-dtr01'
+      when: inventory_hostname == "{{ dtr_main }}"
 
     - name: Open required ports
       command: firewall-cmd --permanent --zone=public --add-port=2049/tcp --add-port=2049/udp --add-port=111/tcp --add-port=111/udp --add-port=54302/tcp --add-port=54302/udp --add-port=20048/tcp --add-port=20048/udp --add-port=46666/tcp --add-port=46666/udp --add-port=42955/tcp --add-port=42955/udp --add-port=875/tcp --add-port=875/udp
-      when: inventory_hostname == 'dp-dtr01'
+      when: inventory_hostname == "{{ dtr_main }}"
 
     - name: Reload firewalld
       command: firewall-cmd --reload
-      when: inventory_hostname == 'dp-dtr01'
+      when: inventory_hostname == "{{ dtr_main }}"
