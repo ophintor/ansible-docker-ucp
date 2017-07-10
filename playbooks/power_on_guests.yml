@@ -19,6 +19,6 @@
         guest: "{{ inventory_hostname }}"
         state: powered_on
 
-#    - name: Wait for VMs to boot up
-#      pause:
-#        minutes: 3
+    - name: Wait for VMs to boot up
+      pause:
+        minutes: 3
