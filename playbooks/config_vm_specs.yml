@@ -31,7 +31,7 @@
             datastore: "{{ datastores | random }}"
         esxi:
           datacenter:  "{{ datacenter }}"
-          hostname: "{{ esxi_host }}"
+          hostname: "{{ esxi_hosts | random }}"
       when: inventory_hostname in groups.ucp
 
     - name: Reconfigure CPU and RAM specs on workers and DTR hosts
@@ -55,7 +55,7 @@
             datastore: "{{ datastores | random }}"
         esxi:
           datacenter:  "{{ datacenter }}"
-          hostname: "{{ esxi_host }}"
+          hostname: "{{ esxi_hosts | random }}"
       when: inventory_hostname in groups.dtr or inventory_hostname in groups.worker
 
     - name: Reconfigure CPU and RAM specs on Load Balancers
@@ -74,5 +74,5 @@
           num_cpus: "{{ lb_cpus }}"
         esxi:
           datacenter:  "{{ datacenter }}"
-          hostname: "{{ esxi_host }}"
+          hostname: "{{ esxi_hosts | random }}"
       when: inventory_hostname in groups.lbs

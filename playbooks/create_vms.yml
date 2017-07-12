@@ -24,4 +24,4 @@
           folder: "{{ folder_name }}"
         esxi:
           datacenter: "{{ datacenter }}"
-          hostname: "{{ esxi_host }}"
+          hostname: "{{ esxi_hosts | random }}"

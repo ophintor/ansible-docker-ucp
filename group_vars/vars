@@ -4,7 +4,7 @@ vcenter_hostname: 'dhvc.am2.cloudra.local'
 vcenter_user: 'administrator@vsphere.local'
 datacenter: 'PCE-DC'
 cluster: 'Engineering'
-esxi_host: 'dh01.am2.cloudra.local'
+esxi_hosts: ['dh01.am2.cloudra.local']
 vm_username: 'root'
 vm_template: 'dp-template'
 folder_name: 'dp'
