@@ -39,8 +39,9 @@ dtr_version: 'latest'
 ucp_version: 'latest'
 images_folder: '/docker-images'
 
-# Proxy settings (comment out / remove if not required)
+# Comment out proxy settings if not required
 env:
   http_proxy: 'http://15.184.4.2:8080'
   https_proxy: 'https://15.184.4.2:8080'
   no_proxy: 'localhost,127.0.0.1,.cloudra.local,10.10.174.'
+  foo: 'bar' # Don't comment to avoid annoying messages when not using the proxy 
