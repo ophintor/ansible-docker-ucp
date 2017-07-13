@@ -37,6 +37,7 @@
       mount:
         path: "{{ images_folder }}"
         src: "{{ disk2_part }}"
+        fstype: xfs
         state: mounted
 
     - name: Install NFS server
@@ -46,14 +47,6 @@
       with_items:
         - rpcbind
         - nfs-utils
-
-    - name: Modify exports file on NFS server
-      template:
-        src: templates/exports.j2
-        dest: /etc/exports
-
-    - name: Refresh exportfs
-      command: exportfs -a
 
     - name: Enable and start NFS services on server
       systemd:
@@ -65,3 +58,12 @@
         - nfs-server
         - nfs-lock
         - nfs-idmap
+
+    - name: Modify exports file on NFS server
+      template:
+        src: ../templates/exports.j2
+        dest: /etc/exports
+
+    - name: Refresh exportfs
+      command: exportfs -a
+
