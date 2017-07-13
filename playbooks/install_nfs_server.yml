@@ -1,0 +1,67 @@
+---
+- hosts: nfs
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - ../group_vars/vars
+
+  environment: "{{ env }}"
+
+  tasks:
+    - name: Open required ports
+      command: firewall-cmd --permanent --zone=public --add-port=2049/tcp --add-port=2049/udp --add-port=111/tcp --add-port=111/udp --add-port=54302/tcp --add-port=54302/udp --add-port=20048/tcp --add-port=20048/udp --add-port=46666/tcp --add-port=46666/udp --add-port=42955/tcp --add-port=42955/udp --add-port=875/tcp --add-port=875/udp
+
+    - name: Reload firewalld
+      command: firewall-cmd --reload
+
+    - name: Create partition on second disk
+      parted:
+        device: "{{ disk2 }}"
+        number: 1
+        state: present    
+
+    - name: Create filesystem
+      filesystem:
+        fstype: xfs
+        dev: "{{ disk2_part }}"
+
+    - name: Create folder
+      file:
+        path: "{{ images_folder }}"
+        state: directory
+        mode: 0777
+
+    - name: Mount filesystem
+      mount:
+        path: "{{ images_folder }}"
+        src: "{{ disk2_part }}"
+        state: mounted
+
+    - name: Install NFS server
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - rpcbind
+        - nfs-utils
+
+    - name: Modify exports file on NFS server
+      template:
+        src: templates/exports.j2
+        dest: /etc/exports
+
+    - name: Refresh exportfs
+      command: exportfs -a
+
+    - name: Enable and start NFS services on server
+      systemd:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      with_items:
+        - rpcbind
+        - nfs-server
+        - nfs-lock
+        - nfs-idmap

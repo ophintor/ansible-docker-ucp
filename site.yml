@@ -12,7 +12,8 @@
 - include: playbooks/config_lvs.yml
 - include: playbooks/start_docker.yml
 - include: playbooks/docker_post_config.yml
-- include: playbooks/install_nfs_on_dtr_nodes.yml
+- include: playbooks/install_nfs_server.yml
+- include: playbooks/install_nfs_clients.yml
 - include: playbooks/install_ucp_nodes.yml
 - include: playbooks/install_dtr_nodes.yml
 - include: playbooks/install_worker_nodes.yml

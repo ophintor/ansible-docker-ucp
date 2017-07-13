@@ -1,0 +1,22 @@
+---
+- hosts: dtr
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - ../group_vars/vars
+
+  environment: "{{ env }}"
+
+  tasks:
+    - name: Install NFS client
+      yum:
+        name: nfs-utils
+        state: latest
+
+    - name: Create folder
+      file:
+        path: "{{ images_folder }}"
+        state: directory
+        mode: 0777

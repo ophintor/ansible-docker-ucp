@@ -37,3 +37,6 @@ dp-app-lb ip_addr='10.10.174.74/22'
 ucp
 dtr
 worker
+
+[nfs]
+dp-nfs ip_addr='10.10.174.75/22'

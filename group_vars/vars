@@ -4,7 +4,7 @@ vcenter_hostname: 'dhvc.am2.cloudra.local'
 vcenter_user: 'administrator@vsphere.local'
 datacenter: 'PCE-DC'
 cluster: 'Engineering'
-esxi_hosts: ['dh01.am2.cloudra.local']
+esxi_hosts: ['dh01.am2.cloudra.local','dh02.am2.cloudra.local']
 vm_username: 'root'
 vm_template: 'dp-template'
 folder_name: 'dp'
@@ -18,6 +18,9 @@ dtr_disk2_size: 200
 worker_ram: 16384
 worker_cpus: 4
 worker_disk2_size: 200
+nfs_ram: 8192
+nfs_cpus: 2
+nfs_disk2_size: 200
 lb_ram: 4096
 lb_cpus: 2
 disk2: '/dev/sdb'
@@ -30,7 +33,6 @@ gateway: '10.10.172.1'
 dns: ['10.10.173.1','8.8.8.8']
 domain_name: 'am2.cloudra.local'
 ntp_server: ['10.12.2.1']
-nfs_host_prefix: 'dp-dtr'
 
 # Docker settings
 docker_ee_url: 'https://storebits.docker.com/ee/linux/sub-bee89908-9360-4f5c-a3e2-e059a8f88605'
@@ -38,6 +40,7 @@ rhel_version: '7.3'
 dtr_version: 'latest'
 ucp_version: 'latest'
 images_folder: '/docker-images'
+license_path: 'ee-license.lic'
 
 # Comment out proxy settings if not required
 env:
