@@ -40,7 +40,7 @@ rhel_version: '7.3'
 dtr_version: 'latest'
 ucp_version: 'latest'
 images_folder: '/docker-images'
-license_path: 'ee-license.lic'
+license_file: 'ee-license.lic'
 
 # Comment out proxy settings if not required
 env:
