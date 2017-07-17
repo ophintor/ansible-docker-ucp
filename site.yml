@@ -17,4 +17,3 @@
 - include: playbooks/install_ucp_nodes.yml
 - include: playbooks/install_dtr_nodes.yml
 - include: playbooks/install_worker_nodes.yml
-- include: playbooks/run_docker_bench_for_security.yml

@@ -12,7 +12,7 @@
     dtr_lb: "{{ groups['dtr_lb'][0] }}.{{ domain_name }}"
     ucp_main: "{{ groups['ucp_main'][0] }}.{{ domain_name }}"
     dtr_main: "{{ groups['dtr_main'][0] }}"
-    nfs_server: "{{ groups['nfs'][0] }}.{{ domain_name }}"
+    nfs_server: "{{ hostvars[groups['nfs'][0]].ip_addr | ipaddr('address') }}"
 
 
   tasks:
@@ -48,5 +48,5 @@
       register: task_result
       until: task_result.rc == 0
       retries: 20
-      delay: 20
+      delay: 30
       when: inventory_hostname not in groups.dtr_main
