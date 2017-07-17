@@ -25,7 +25,7 @@
         state: restarted
 
     - name: Install swarm leader and first UCP node
-      command: docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp:{{ ucp_version }} install --host-address {{ ip_addr | ipaddr('address') }} --admin-username=admin --admin-password={{ vm_pw }} --license `cat {{ playbook_dir }}/{{ license_file }}` {{ san_hosts }} {{ san_ips }}
+      shell: docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp:{{ ucp_version }} install --host-address {{ ip_addr | ipaddr('address') }} --admin-username=admin --admin-password={{ vm_pw }} --license "$(cat {{ license_file }})" {{ san_hosts }} {{ san_ips }}
       register: output
       when: inventory_hostname in groups.ucp_main
       failed_when: output.rc > 1
