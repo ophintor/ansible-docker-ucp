@@ -1,13 +1,13 @@
 ## What is this
 This bunch of playbooks will install a Docker Datacenter environment on top of vCenter on RHEL 7.3 VMs. It will install:
 
-- 3 UCP nodes
-- 3 DTR nodes
-- 3 worker nodes
-- 3 load balancers (one for each of the above trio)
+- A number of UCP nodes (typically 3)
+- A number of DTR nodes (typically 3)
+- A number of Worker nodes (typically 3)
+- 3 load balancers (one for each of the above sets)
 - 1 NFS server
 
-The playbooks are meant to support a different number of nodes (ie. 5 DTR nodes rather than 3) but so far it's only been tested with 3 every time.
+The playbooks are meant to support a different number of nodes (ie. 5 DTR nodes rather than 3). You can also add new nodes after an environment has been created by adding the hosts to the `vm_hosts`(inventory) file and running `site.yml` again as described below.
 
 The following instructions assume some basic knowledge on vCenter/Linux.
 
@@ -68,4 +68,3 @@ It should take about 25 minutes to run.
 
 ## TO-DO
 - The playbooks will install a vsphere plugin so you can create volumes directly in your datastores, but for this you need to install the latest release of vDVS driver VIB. This has been done manually so far. More info: https://blogs.vmware.com/virtualblocks/2017/03/29/vsphere-docker-volume-service-now-docker-certified
-- Test 5 nodes rather than 3
