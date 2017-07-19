@@ -1,37 +1,62 @@
+## UCP
 [ucp_main]
-dp-ucp01 ip_addr='10.10.174.63/22'
-
-[dtr_main]
-dp-dtr01 ip_addr='10.10.174.66/22'
+dp-ucp01 ip_addr='10.10.174.63/22' esxi_host='dh01.am2.cloudra.local'
 
 [ucp]
-dp-ucp01 ip_addr='10.10.174.63/22'
-dp-ucp02 ip_addr='10.10.174.64/22'
-dp-ucp03 ip_addr='10.10.174.65/22'
+dp-ucp01 ip_addr='10.10.174.63/22' esxi_host='dh01.am2.cloudra.local'
+dp-ucp02 ip_addr='10.10.174.64/22' esxi_host='dh02.am2.cloudra.local'
+dp-ucp03 ip_addr='10.10.174.65/22' esxi_host='dh01.am2.cloudra.local'
+
+[ucp:vars]
+cpus='4'
+ram='8192'
+disk2_size='200'
+
+
+# DTR
+[dtr_main]
+dp-dtr01 ip_addr='10.10.174.66/22' esxi_host='dh01.am2.cloudra.local'
 
 [dtr]
-dp-dtr01 ip_addr='10.10.174.66/22'
-dp-dtr02 ip_addr='10.10.174.67/22'
-dp-dtr03 ip_addr='10.10.174.68/22'
+dp-dtr01 ip_addr='10.10.174.66/22' esxi_host='dh01.am2.cloudra.local'
+dp-dtr02 ip_addr='10.10.174.67/22' esxi_host='dh02.am2.cloudra.local'
+dp-dtr03 ip_addr='10.10.174.68/22' cpus='6' esxi_host='dh01.am2.cloudra.local'
 
+[dtr:vars]
+cpus='4' 
+ram='16384' 
+disk2_size='200'
+
+## WORKER
 [worker]
-dp-worker01 ip_addr='10.10.174.69/22'
-dp-worker02 ip_addr='10.10.174.70/22'
-dp-worker03 ip_addr='10.10.174.71/22'
+dp-worker01 ip_addr='10.10.174.69/22' esxi_host='dh02.am2.cloudra.local'
+dp-worker02 ip_addr='10.10.174.70/22' esxi_host='dh01.am2.cloudra.local'
+dp-worker03 ip_addr='10.10.174.71/22' esxi_host='dh02.am2.cloudra.local'
 
-[lbs]
-dp-ucp-lb ip_addr='10.10.174.72/22'
-dp-dtr-lb ip_addr='10.10.174.73/22'
-dp-app-lb ip_addr='10.10.174.74/22'
+[worker:vars]
+cpus='4'
+ram='16384'
+disk2_size='200'
 
+## LOAD BALANCERS
 [ucp_lb]
-dp-ucp-lb ip_addr='10.10.174.72/22'
+dp-ucp-lb ip_addr='10.10.174.72/22' esxi_host='dh02.am2.cloudra.local'
 
 [dtr_lb]
-dp-dtr-lb ip_addr='10.10.174.73/22'
+dp-dtr-lb ip_addr='10.10.174.73/22' esxi_host='dh01.am2.cloudra.local'
 
 [app_lb]
-dp-app-lb ip_addr='10.10.174.74/22'
+dp-app-lb ip_addr='10.10.174.74/22' esxi_host='dh02.am2.cloudra.local'
+
+[lbs]
+dp-ucp-lb ip_addr='10.10.174.72/22' esxi_host='dh02.am2.cloudra.local'
+dp-dtr-lb ip_addr='10.10.174.73/22' esxi_host='dh01.am2.cloudra.local'
+dp-app-lb ip_addr='10.10.174.74/22' esxi_host='dh02.am2.cloudra.local'
+
+[lbs:vars]
+cpus='2'
+ram='4096'
+disk2_size='0'
 
 [docker:children]
 ucp
@@ -39,4 +64,9 @@ dtr
 worker
 
 [nfs]
-dp-nfs ip_addr='10.10.174.75/22'
+dp-nfs ip_addr='10.10.174.75/22' esxi_host='dh02.am2.cloudra.local'
+
+[nfs:vars]
+cpus='2'
+ram='4096'
+disk2_size='200'

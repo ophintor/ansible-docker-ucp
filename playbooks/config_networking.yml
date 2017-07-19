@@ -70,7 +70,13 @@
         vm_shell_args: "con mod {{ nic_name }} connection.autoconnect yes"
 
     - name: Update /etc/hosts
-      template: src=../templates/hosts.j2 dest=/etc/hosts
+      template:
+        src: ../templates/hosts.j2
+        dest: /etc/hosts
+        unsafe_writes: yes
 
     - name: Update DNS settings
-      template: src=../templates/resolv.conf.j2 dest=/etc/resolv.conf
+      template:
+        src: ../templates/resolv.conf.j2
+        dest: /etc/resolv.conf
+        unsafe_writes: yes

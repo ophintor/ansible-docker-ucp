@@ -3,26 +3,10 @@
 vcenter_hostname: 'dhvc.am2.cloudra.local'
 vcenter_user: 'administrator@vsphere.local'
 datacenter: 'PCE-DC'
-cluster: 'Engineering'
-esxi_hosts: ['dh01.am2.cloudra.local','dh02.am2.cloudra.local']
 vm_username: 'root'
 vm_template: 'dp-template'
-folder_name: 'dp'
+folder_name: '/dp'
 datastores: ['docker_share_data1','docker_share_data2']
-ucp_ram: 8192
-ucp_cpus: 2
-ucp_disk2_size: 200
-dtr_ram: 16384
-dtr_cpus: 4
-dtr_disk2_size: 200
-worker_ram: 16384
-worker_cpus: 4
-worker_disk2_size: 200
-nfs_ram: 8192
-nfs_cpus: 2
-nfs_disk2_size: 200
-lb_ram: 4096
-lb_cpus: 2
 disk2: '/dev/sdb'
 disk2_part: '/dev/sdb1'
 vsphere_plugin_version: 'latest' # was 0.12
