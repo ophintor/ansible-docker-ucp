@@ -8,14 +8,26 @@
     - ../group_vars/vars
 
   tasks:
-    - name: Set partition label GPT
-      command: parted -s -a optimal {{ disk2 }} mklabel gpt
-
-    - name: Create partition
-      command: parted -s -a optimal {{ disk2 }} mkpart primary 0% 100%
-
-    - name: Set LVM on partition
-      command: parted -s -a optimal {{ disk2 }} set 1 lvm on
+    - name: Create partition on second disk
+      parted:
+        label: gpt
+        part_type: primary
+        device: "{{ disk2 }}"
+        flags: [ lvm ]
+        state: present
+        number: 1
+        part_start: 0%
+        part_end: 100%
+      ignore_errors: yes
+        
+#    - name: Set partition label GPT
+#      command: parted -s -a optimal {{ disk2 }} mklabel gpt
+#
+#    - name: Create partition
+#      command: parted -s -a optimal {{ disk2 }} mkpart primary 0% 100%
+#
+#    - name: Set LVM on partition
+#      command: parted -s -a optimal {{ disk2 }} set 1 lvm on
 
     - name: Create Docker VG
       lvg:
@@ -23,19 +35,29 @@
         pvs: "{{ disk2_part }}"
 
     - name: Create thinpool LV
-      command: lvcreate --wipesignatures y -n thinpool docker -l 95%VG
+      lvol:
+        lv: thinpool
+        opts: --wipesignatures y
+        vg: docker
+        size: 95%VG
 
     - name: Create thinpoolmeta LV
-      command: lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG
+      lvol:
+        lv: thinpoolmeta
+        opts: --wipesignatures y
+        vg: docker
+        size: 1%VG
 
     - name: LV convert
       command: lvconvert -y  --zero n -c 512K  --thinpool docker/thinpool --poolmetadata docker/thinpoolmeta
+      ignore_errors: yes
 
     - name: Config thinpool profile
-      copy:  src=../files/docker-thinpool.profile dest=/etc/lvm/profile/docker-thinpool.profile
+      copy: src=../files/docker-thinpool.profile dest=/etc/lvm/profile/docker-thinpool.profile
 
     - name: LV change
       command: lvchange --metadataprofile docker-thinpool docker/thinpool
+      ignore_errors: yes
 
     - name: LV monitor
       command: lvs -o+seg_monitor
