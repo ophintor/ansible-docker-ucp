@@ -27,26 +27,31 @@
         file: /tmp/worker_token
         name: add_worker
 
+    - name: Check if node already belongs to the swarm
+      shell: docker info | grep "Swarm{{':'}} inactive" | wc -l
+      register: swarm_inactive
+
     - name: Add DTR and Worker nodes to the swarm
       command: "{{ add_worker.token }}"
+      when: swarm_inactive.stdout == "1"
 
     - name: Install first DTR node
       command: docker run --rm docker/dtr:{{ dtr_version }} install --nfs-storage-url nfs://{{ nfs_server }}{{ images_folder }} --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-insecure-tls --dtr-external-url https://{{ dtr_lb }} --ucp-url https://{{ ucp_main }} --ucp-username admin --ucp-password {{ vm_pw }}
-      when: inventory_hostname in groups.dtr_main
+      when: inventory_hostname in groups.dtr_main and swarm_inactive.stdout == "1"
       register: dtrlog
       until: dtrlog.rc == 0
       retries: 20
       delay: 20
 
-    - name: Grab DTR flag from output
-      shell: echo "{{ dtrlog.stdout }}" | grep 'You can use flag'| cut -d "'" -f2
+    - name: Get replica ID
+      shell: docker ps --format "{{ '{{' }}.Names{{ '}}' }}" | grep dtr | awk -F'-' '{ print $NF }' | uniq
+      register: replica_id
       when: inventory_hostname in groups.dtr_main
-      register: flag
 
     - name: Add DTR nodes
-      command: docker run --rm docker/dtr:{{ dtr_version }} join --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-url https://{{ ucp_main }} --ucp-username admin --ucp-password {{ vm_pw }} --ucp-insecure-tls {{ hostvars[dtr_main]['flag']['stdout'] }}
+      command: docker run --rm docker/dtr:{{ dtr_version }} join --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-url https://{{ ucp_main }} --ucp-username admin --ucp-password {{ vm_pw }} --ucp-insecure-tls --existing-replica-id {{ hostvars[dtr_main]['replica_id']['stdout'] }} 
       register: task_result
       until: task_result.rc == 0
       retries: 20
       delay: 30
-      when: inventory_hostname not in groups.dtr_main
+      when: inventory_hostname not in groups.dtr_main and swarm_inactive.stdout == "1"

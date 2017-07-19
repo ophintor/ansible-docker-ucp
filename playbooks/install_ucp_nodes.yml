@@ -24,11 +24,14 @@
         name: docker
         state: restarted
 
+    - name: Check if node already belongs to the swarm
+      shell: docker info | grep "Swarm{{ ":" }} inactive" | wc -l
+      register: swarm_inactive
+
     - name: Install swarm leader and first UCP node
       shell: docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp:{{ ucp_version }} install --host-address {{ ip_addr | ipaddr('address') }} --admin-username=admin --admin-password={{ vm_pw }} --license "$(cat {{ license_file }})" {{ san_hosts }} {{ san_ips }}
       register: output
-      when: inventory_hostname in groups.ucp_main
-      failed_when: output.rc > 1
+      when: inventory_hostname in groups.ucp_main and swarm_inactive.stdout == "1"
 
     - name: Get swarm manager token
       shell: echo `docker swarm join-token manager` | cut -f2 -d':' | sed 's|\\||g'
@@ -45,4 +48,4 @@
 
     - name: Add additional UCP nodes to the swarm
       command: "{{ hostvars[groups['ucp_main'][0]]['manager_token']['stdout'] }}"
-      when: inventory_hostname not in groups.ucp_main
+      when: inventory_hostname not in groups.ucp_main and swarm_inactive.stdout == "1"
