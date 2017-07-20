@@ -1,0 +1,55 @@
+---
+- hosts: ucp
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - ../group_vars/vars
+
+  environment: "{{ env }}"
+
+  tasks:
+    - name: Open required ports for Grafana and Prometheus
+      command: firewall-cmd --permanent --zone=public --add-port=9090/tcp --add-port=3000/tcp
+
+    - name: Copy monitoring files to UCP
+      copy: 
+        src: ../monitoring
+        dest: /root
+        owner: root
+        group: root
+        mode: 0644
+      when: inventory_hostname in groups.ucp_main
+
+    - name: Deploy monitoring stack
+      command: docker stack deploy --compose-file docker-compose.yml prom
+      args:
+        chdir: /root/monitoring
+      when: inventory_hostname in groups.ucp_main
+
+    - name: Wait for Prometheus to be available
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 9090
+        delay: 15
+      when: inventory_hostname in groups.ucp_main
+
+    - name: Wait for Grafana to be available
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 3000
+        delay: 15
+      when: inventory_hostname in groups.ucp_main
+
+    - name: Create Grafana Data Source
+      uri:
+        url: "http://{{ inventory_hostname }}.{{ domain_name }}:3000/api/datasources"
+        method: POST
+        user: admin
+        password: admin
+        body: "{{ lookup('file','../monitoring/datasource.json') }}"
+        status_code: 200
+        body_format: json
+        force_basic_auth: yes
+      when: inventory_hostname in groups.ucp_main
