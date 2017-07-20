@@ -5,7 +5,7 @@
       "label": "Prometheus",
       "description": "",
       "type": "datasource",
-      "pluginId": "Prometheus",
+      "pluginId": "prometheus",
       "pluginName": "Prometheus"
     }
   ],
