@@ -66,3 +66,4 @@
 #        body_format: json
 #        force_basic_auth: yes
 #      when: inventory_hostname in groups.ucp_main
+#      tags: ds
