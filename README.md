@@ -63,7 +63,7 @@ From inside the cloned folder, run the playbook as follows:
 It should take about 25 minutes to run.
 
 ## Monitoring capabilities
-The last step of the `site.yml` playbook will create a monitoring stack using Graphana and Prometheus. You can access the Graphana UI by browsing to http://<UCP-LB>:3000. There is an example dashboard in JSON format included in the monitoring folder that you can import from the UI.
+The last step of the `site.yml` playbook will create a monitoring stack using Graphana and Prometheus. You can access the Graphana UI by browsing to http://UCP-NODE:3000. There is an example dashboard in JSON format included in the monitoring folder that you can import from the UI.
 
 ## Known issues
 - Your FQDN should resolve using DNS or else they will fail when trying to set up your DTR. A solution to this is either using your own publicly accessible domain or alternatively you could try this: https://github.com/bobfraser1/alpine-router
