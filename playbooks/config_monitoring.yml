@@ -53,3 +53,16 @@
         body_format: json
         force_basic_auth: yes
       when: inventory_hostname in groups.ucp_main
+
+# API doesnt seem to be working
+#    - name: Import Dashboard
+#      uri:
+#        url: "http://{{ inventory_hostname }}.{{ domain_name }}:3000/api/dashboards/import"
+#        method: POST
+#        user: admin
+#        password: admin
+#        body: "{{ lookup('file','../monitoring/Docker-Swarm-Dashboard.json') }}"
+#        status_code: 200
+#        body_format: json
+#        force_basic_auth: yes
+#      when: inventory_hostname in groups.ucp_main
