@@ -15,7 +15,6 @@
         vcenter_hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_user }}"
         password: "{{ vcenter_pass }}"
-        cluster: "{{ cluster }}"
         guest: "{{ inventory_hostname }}"
         state: powered_on
 
