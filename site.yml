@@ -17,3 +17,4 @@
 - include: playbooks/install_dtr_nodes.yml
 - include: playbooks/install_worker_nodes.yml
 - include: playbooks/config_monitoring.yml
+- include: playbooks/config_simplivity_backups.yml

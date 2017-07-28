@@ -1,22 +1,37 @@
 ---
 # VMs information
-vcenter_hostname: 'dhvc.am2.cloudra.local'
-vcenter_user: 'administrator@vsphere.local'
-datacenter: 'PCE-DC'
+vcenter_hostname: 'LondonVC.cloud.local'
+vcenter_user: 'David.Pintor@DEMO'
+datacenter: 'London'
 vm_username: 'root'
 vm_template: 'dp-template'
 folder_name: '/dp'
-datastores: ['docker_share_data1','docker_share_data2']
+datastores: ['Docker-DS01','Docker-DS02']
 disk2: '/dev/sdb'
 disk2_part: '/dev/sdb1'
 vsphere_plugin_version: 'latest' # was 0.12
 
+# Simplivity information
+simplivity_user: 'David.Pintor@DEMO'
+omnistack_ovc: ['10.20.4.166']
+backup_policies:
+ - name: 'dp-bronze4'
+   days: 'All'
+   start_time: '11:30'
+   frequency: '1440'
+   retention: '10080'
+ - name: 'dp-gold4'
+   days: 'All'
+   start_time: '00:00'
+   frequency: '60'
+   retention: '2880'
+
 # Networking
 nic_name: 'ens192'
-gateway: '10.10.172.1'
-dns: ['10.10.173.1','8.8.8.8']
-domain_name: 'am2.cloudra.local'
-ntp_server: ['10.12.2.1']
+gateway: '10.20.4.1'
+dns: ['10.20.0.12','10.20.0.10']
+domain_name: 'dabeed.net'
+ntp_server: ['0.us.pool.net.org','1.us.pool.net.org','2.us.pool.net.org']
 
 # Docker settings
 docker_ee_url: 'https://storebits.docker.com/ee/linux/sub-bee89908-9360-4f5c-a3e2-e059a8f88605'
@@ -24,11 +39,11 @@ rhel_version: '7.3'
 dtr_version: 'latest'
 ucp_version: 'latest'
 images_folder: '/docker-images'
-license_file: '/root/docker_ucp/license.lic'
+license_file: '/root/ansible-docker-ucp/license.lic'
 
 # Comment out proxy settings if not required
 env:
-  http_proxy: 'http://15.184.4.2:8080'
-  https_proxy: 'https://15.184.4.2:8080'
-  no_proxy: 'localhost,127.0.0.1,.cloudra.local,10.10.174.'
+#  http_proxy: 'http://15.184.4.2:8080'
+#  https_proxy: 'https://15.184.4.2:8080'
+#  no_proxy: 'localhost,127.0.0.1,.cloudra.local,10.10.174.'
   foo: 'bar' # Don't comment to avoid annoying messages when not using the proxy 

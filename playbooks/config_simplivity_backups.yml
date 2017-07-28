@@ -1,0 +1,95 @@
+---
+- hosts: all
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - ../group_vars/vars
+    - ../group_vars/vault
+
+  vars:
+    ovc: "{{ omnistack_ovc | random }}"
+
+  environment: "{{ env }}"
+
+  tasks:
+    - name: Get Simplivity token
+      shell: curl -k https://simplivity@{{ ovc }}/api/oauth/token -d grant_type=password -d username='{{ simplivity_user }}' -d password='{{ simplivity_password }}' | python -mjson.tool | grep access_token | awk -F'"' '{ print $4 }'
+      register: token
+      when: inventory_hostname in groups.local
+
+    - name: Create backup policies
+      uri:
+        url: "https://{{ ovc }}/api/policies"
+        headers:
+          Content-Type: application/vnd.simplivity.v1+json
+          Authorization: Bearer {{ token.stdout }}
+        method: POST
+        body: {"name":"{{ item.name }}"}
+        status_code: 202
+        body_format: json
+        force_basic_auth: yes
+        validate_certs: no
+      with_items: "{{ backup_policies }}"
+      when: inventory_hostname in groups.local
+
+    - name: Get policy IDs
+      uri:
+        url: "https://{{ ovc }}/api/policies"
+        headers:
+          Content-Type: application/vnd.simplivity.v1+json
+          Authorization: Bearer {{ token.stdout }}
+        method: GET
+        body_format: json
+        force_basic_auth: yes
+        validate_certs: no
+      register: policy_ids
+      when: inventory_hostname in groups.local
+
+    - name: Get VM IDs
+      uri:
+        url: "https://{{ ovc }}/api/virtual_machines"
+        headers:
+          Content-Type: application/vnd.simplivity.v1+json
+          Authorization: Bearer {{ token.stdout }}
+        method: GET
+        body_format: json
+        force_basic_auth: yes
+        validate_certs: no
+      register: vm_ids
+      when: inventory_hostname in groups.local
+
+    - name: Create backup rules
+      uri:
+        url: "https://{{ ovc }}/api/policies/{{ policy_ids | json_query(q) }}/rules"
+        headers:
+          Content-Type: application/vnd.simplivity.v1+json
+          Authorization: Bearer {{ token.stdout }}
+        method: POST
+        body: {"days":"{{ item.days }}","start_time":"{{ item.start_time }}","frequency":"{{ item.frequency }}","retention":"{{ item.retention }}"}
+        status_code: 202
+        body_format: json
+        force_basic_auth: yes
+        validate_certs: no
+      with_items: "{{ backup_policies }}"
+      vars: 
+        q: "json.policies[?name=='{{ item.name }}'].id | [0]"
+      when: inventory_hostname in groups.local
+
+    - name: Assign policies to VMs
+      uri:
+        url: "https://{{ ovc }}/api/virtual_machines/{{ hostvars[groups['local'][0]]['vm_ids'] | json_query(q_vms) }}/set_policy"
+        headers:
+          Content-Type: application/vnd.simplivity.v1+json
+          Authorization: Bearer {{ hostvars[groups['local'][0]]['token']['stdout'] }}
+        method: POST
+        body: {"policy_id":"{{ hostvars[groups['local'][0]]['policy_ids'] | json_query(q_policies) }}"}
+        status_code: 202
+        body_format: json
+        force_basic_auth: yes
+        validate_certs: no
+      vars:
+        q_policies: "json.policies[?name=='{{ node_policy }}'].id | [0]"
+        q_vms: "json.virtual_machines[?name=='{{ inventory_hostname }}'].id | [0]"
+      delegate_to: localhost
+      when: inventory_hostname not in groups.local
