@@ -70,3 +70,15 @@ dp-nfs ip_addr='10.10.174.75/22' esxi_host='dh02.am2.cloudra.local'
 cpus='2'
 ram='4096'
 disk2_size='200'
+
+[vms:children]
+ucp
+dtr
+worker
+lbs
+nfs
+
+## SIMPLIVITY - just needs the IP of your OVC
+[simplivity]
+10.20.4.166
+

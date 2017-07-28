@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: vms
   gather_facts: false
   become_user: root
   become: true
