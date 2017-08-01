@@ -17,6 +17,7 @@
       shell: curl -k https://simplivity@{{ ovc }}/api/oauth/token -d grant_type=password -d username='{{ simplivity_user }}' -d password='{{ simplivity_password }}' | python -mjson.tool | grep access_token | awk -F'"' '{ print $4 }'
       register: token
       when: inventory_hostname in groups.local
+      tags: debug
 
     - name: Create backup policies
       uri:
@@ -45,6 +46,7 @@
         validate_certs: no
       register: policy_ids
       when: inventory_hostname in groups.local
+      tags: debug
 
     - name: Get VM IDs
       uri:
@@ -58,6 +60,7 @@
         validate_certs: no
       register: vm_ids
       when: inventory_hostname in groups.local
+      tags: debug
 
     - name: Create backup rules
       uri:
@@ -93,3 +96,4 @@
         q_vms: "json.virtual_machines[?name=='{{ inventory_hostname }}'].id | [0]"
       delegate_to: localhost
       when: inventory_hostname not in groups.local
+      tags: debug
