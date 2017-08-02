@@ -93,7 +93,7 @@
         validate_certs: no
       vars:
         q_policies: "json.policies[?name=='{{ node_policy }}'].id | [0]"
-        q_vms: "json.virtual_machines[?name=='{{ inventory_hostname }}'].id | [0]"
+        q_vms: "json.virtual_machines[?name=='{{ inventory_hostname }}' && state=='ALIVE'].id | [0]"
       delegate_to: localhost
       when: inventory_hostname not in groups.local
       tags: debug

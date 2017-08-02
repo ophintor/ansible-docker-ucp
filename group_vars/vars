@@ -15,12 +15,12 @@ vsphere_plugin_version: 'latest' # was 0.12
 simplivity_user: 'David.Pintor@DEMO'
 omnistack_ovc: ['10.20.4.166']
 backup_policies:
- - name: 'dp-bronze4'
+ - name: 'dp-bronze'
    days: 'All'
    start_time: '11:30'
    frequency: '1440'
    retention: '10080'
- - name: 'dp-gold4'
+ - name: 'dp-gold'
    days: 'All'
    start_time: '00:00'
    frequency: '60'
