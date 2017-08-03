@@ -9,8 +9,11 @@
     - ../group_vars/vault
 
   vars:
-    san_hosts: "--san {{ groups['ucp'] | join(' --san ') }}"
-    san_ips: "--san {{ groups['ucp'] | map('extract', hostvars, ['ip_addr']) | ipaddr('address') | join (' --san ') }}"
+    san_hosts: "{{ groups['ucp'] + groups['ucp_lb'] }}"
+    san_ips: "{{ groups['ucp'] | map('extract', hostvars, ['ip_addr']) | ipaddr('address') }}"
+    san_lb_ip: "{{ groups['ucp_lb'] | map('extract', hostvars, ['ip_addr']) | ipaddr('address') }}"
+    san_all: "{{ san_hosts }} + {{ san_ips }} + {{ san_lb_ip }}"
+    san_all_formatted: "--san {{ san_all | join (' --san ') }}"
 
   tasks:
     - name: Open required ports for UCP
@@ -28,8 +31,11 @@
       shell: docker info | grep "Swarm{{ ":" }} inactive" | wc -l
       register: swarm_inactive
 
+    - name: Copy the license
+      copy: src="{{ license_file }}" dest="/tmp/{{ license_file | basename }}"
+
     - name: Install swarm leader and first UCP node
-      shell: docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp:{{ ucp_version }} install --host-address {{ ip_addr | ipaddr('address') }} --admin-username=admin --admin-password={{ vm_pw }} --license "$(cat {{ license_file }})" {{ san_hosts }} {{ san_ips }}
+      shell: docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp:{{ ucp_version }} install --host-address {{ ip_addr | ipaddr('address') }} --admin-username=admin --admin-password={{ vm_pw }} --license "$(cat /tmp/{{ license_file | basename }})" {{ san_all_formatted }}
       register: output
       when: inventory_hostname in groups.ucp_main and swarm_inactive.stdout == "1"
 
