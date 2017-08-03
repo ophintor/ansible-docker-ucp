@@ -46,7 +46,7 @@ I'm assuming you're using a RHEL/CentOS server here but it can be done in other 
 	vcenter_pass: 'yourpassword'
 	vm_pw: 'yourpassword'
 	```
-	- Encrypt it by running `ansible-vault encrypt vault group_vars/vault`; enter your password when prompted
+	- Encrypt it by running `ansible-vault encrypt group_vars/vault`; enter your password when prompted
 	- Create a file called .vault_pass containing the password and change permissions to 0600
 	- Optionally remove it from your git list using .gitignore
 
