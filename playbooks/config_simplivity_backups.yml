@@ -13,11 +13,56 @@
   environment: "{{ env }}"
 
   tasks:
+    # This task should use the uri module but not sure how to use the parameters in it
     - name: Get Simplivity token
       shell: curl -k https://simplivity@{{ ovc }}/api/oauth/token -d grant_type=password -d username='{{ simplivity_user }}' -d password='{{ simplivity_password }}' | python -mjson.tool | grep access_token | awk -F'"' '{ print $4 }'
       register: token
       when: inventory_hostname in groups.local
-      tags: debug
+      tags: token
+
+    # This one doesnt work
+    #- name: Get Simplivity token
+    #  uri:
+    #    url: "https://simplivity@{{ ovc }}/api/oauth/token"
+    #    headers:
+    #      Content-Type: application/vnd.simplivity.v1+json
+    #    method: GET
+    #    body: {"grant_type": "password","username": "{{ simplivity_user }}","password": "{{ simplivity_password }}"}
+    #    status_code: 200
+    #    body_format: json
+    #    force_basic_auth: yes
+    #    validate_certs: no
+    #  when: inventory_hostname in groups.local
+    #  tags: token
+
+    - name: Retrieve current backup policies
+      uri:
+        url: "https://{{ ovc }}/api/policies"
+        headers:
+          Content-Type: application/vnd.simplivity.v1+json
+          Authorization: Bearer {{ token.stdout }}
+        method: GET
+        status_code: 200
+        body_format: json
+        force_basic_auth: yes
+        validate_certs: no
+      when: inventory_hostname in groups.local
+      register: current_policies
+
+    - name: Extract existing policies names
+      set_fact: current_policies_names="{{ current_policies | json_query(q) }}"
+      vars:
+        q: "json.policies[].name"
+      when: inventory_hostname in groups.local
+
+    - name: Extract policies names to be added
+      set_fact: backup_policies_names='{{ backup_policies_names|default([])+[item.name] }}'
+      with_items: "{{ backup_policies }}"
+      when: inventory_hostname in groups.local
+
+    - name: Set list of non existent policies to be added
+      set_fact: new_policies_names="{{ backup_policies_names | difference(current_policies_names) }}"
+      when: inventory_hostname in groups.local
 
     - name: Create backup policies
       uri:
@@ -26,13 +71,15 @@
           Content-Type: application/vnd.simplivity.v1+json
           Authorization: Bearer {{ token.stdout }}
         method: POST
-        body: {"name":"{{ item.name }}"}
+        body: {"name":"{{ item }}"}
         status_code: 202
         body_format: json
         force_basic_auth: yes
         validate_certs: no
-      with_items: "{{ backup_policies }}"
+      #with_items: "{{ backup_policies_names | difference(current_policies_names) }}"
+      with_items: "{{ new_policies_names }}"
       when: inventory_hostname in groups.local
+      register: create_output
 
     - name: Get policy IDs
       uri:
@@ -62,6 +109,39 @@
       when: inventory_hostname in groups.local
       tags: debug
 
+
+
+   # - set_facts: current_rules="{{ current_rules|default([]) + [ { 'policy': policy_ids | json_query(p), 'role': policy_ids | json_query(r) } ] }}"
+#    - debug: msg="https://{{ ovc }}/api/policies/{{ policy_ids | json_query(p) }}/rules/{{ policy_ids | json_query(r) }}"
+#      with_nested:
+#        - "{{ backup_policies }}"
+#        - "{{ policy_ids }}"
+#      vars:
+#        p: "json.policies[?name=='{{ item[0].name }}'].id | [0]"
+#        r: "json.policies[?name=='{{ item[0].name }}'].rules[].id | [0]"
+#      when: inventory_hostname in groups.local
+#
+#    - fail: msg="ok"
+
+#    - name: Delete existing backup rules
+#      uri:
+#        url: "https://{{ ovc }}/api/policies/{{ policy_ids | json_query(p) }}/rules/{{ policy_ids | json_query(r) }}"
+#        headers:
+#          Content-Type: application/vnd.simplivity.v1+json
+#          Authorization: Bearer {{ token.stdout }}
+#        method: DELETE
+#        status_code: 202
+#        body_format: json
+#        force_basic_auth: yes
+#        validate_certs: no
+#      with_nested:
+#        - "{{ backup_policies }}"
+#        - "{{ policy_ids }}"
+#      vars:
+#        p: "json.policies[?name=='{{ item[0].name }}'].id | [0]"
+#        r: "json.policies[?name=='{{ item[0].name }}'].rules[0].id | [0]"
+#      when: inventory_hostname in groups.local
+#
     - name: Create backup rules
       uri:
         url: "https://{{ ovc }}/api/policies/{{ policy_ids | json_query(q) }}/rules"
@@ -77,7 +157,7 @@
       with_items: "{{ backup_policies }}"
       vars: 
         q: "json.policies[?name=='{{ item.name }}'].id | [0]"
-      when: inventory_hostname in groups.local
+      when: inventory_hostname in groups.local and new_policies_names | length > 0
 
     - name: Assign policies to VMs
       uri:
