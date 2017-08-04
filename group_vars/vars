@@ -26,6 +26,7 @@ backup_policies:
    frequency: '60'
    retention: '2880'
 dummy_vm_prefix: 'dummyVM'
+docker_volumes_policy: 'dp-gold'
 
 # Networking
 nic_name: 'ens192'

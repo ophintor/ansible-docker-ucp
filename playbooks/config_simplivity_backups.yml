@@ -18,7 +18,6 @@
       shell: curl -k https://simplivity@{{ ovc }}/api/oauth/token -d grant_type=password -d username='{{ simplivity_user }}' -d password='{{ simplivity_password }}' | python -mjson.tool | grep access_token | awk -F'"' '{ print $4 }'
       register: token
       when: inventory_hostname in groups.local
-      tags: token
 
     # This one doesnt work
     #- name: Get Simplivity token
@@ -33,7 +32,6 @@
     #    force_basic_auth: yes
     #    validate_certs: no
     #  when: inventory_hostname in groups.local
-    #  tags: token
 
     - name: Retrieve current backup policies
       uri:
@@ -93,55 +91,7 @@
         validate_certs: no
       register: policy_ids
       when: inventory_hostname in groups.local
-      tags: debug
 
-    - name: Get VM IDs
-      uri:
-        url: "https://{{ ovc }}/api/virtual_machines"
-        headers:
-          Content-Type: application/vnd.simplivity.v1+json
-          Authorization: Bearer {{ token.stdout }}
-        method: GET
-        body_format: json
-        force_basic_auth: yes
-        validate_certs: no
-      register: vm_ids
-      when: inventory_hostname in groups.local
-      tags: debug
-
-
-
-   # - set_facts: current_rules="{{ current_rules|default([]) + [ { 'policy': policy_ids | json_query(p), 'role': policy_ids | json_query(r) } ] }}"
-#    - debug: msg="https://{{ ovc }}/api/policies/{{ policy_ids | json_query(p) }}/rules/{{ policy_ids | json_query(r) }}"
-#      with_nested:
-#        - "{{ backup_policies }}"
-#        - "{{ policy_ids }}"
-#      vars:
-#        p: "json.policies[?name=='{{ item[0].name }}'].id | [0]"
-#        r: "json.policies[?name=='{{ item[0].name }}'].rules[].id | [0]"
-#      when: inventory_hostname in groups.local
-#
-#    - fail: msg="ok"
-
-#    - name: Delete existing backup rules
-#      uri:
-#        url: "https://{{ ovc }}/api/policies/{{ policy_ids | json_query(p) }}/rules/{{ policy_ids | json_query(r) }}"
-#        headers:
-#          Content-Type: application/vnd.simplivity.v1+json
-#          Authorization: Bearer {{ token.stdout }}
-#        method: DELETE
-#        status_code: 202
-#        body_format: json
-#        force_basic_auth: yes
-#        validate_certs: no
-#      with_nested:
-#        - "{{ backup_policies }}"
-#        - "{{ policy_ids }}"
-#      vars:
-#        p: "json.policies[?name=='{{ item[0].name }}'].id | [0]"
-#        r: "json.policies[?name=='{{ item[0].name }}'].rules[0].id | [0]"
-#      when: inventory_hostname in groups.local
-#
     - name: Create backup rules
       uri:
         url: "https://{{ ovc }}/api/policies/{{ policy_ids | json_query(q) }}/rules"
@@ -159,7 +109,20 @@
         q: "json.policies[?name=='{{ item.name }}'].id | [0]"
       when: inventory_hostname in groups.local and new_policies_names | length > 0
 
-    - name: Assign policies to VMs
+    - name: Get VM IDs
+      uri:
+        url: "https://{{ ovc }}/api/virtual_machines"
+        headers:
+          Content-Type: application/vnd.simplivity.v1+json
+          Authorization: Bearer {{ token.stdout }}
+        method: GET
+        body_format: json
+        force_basic_auth: yes
+        validate_certs: no
+      register: vm_ids
+      when: inventory_hostname in groups.local
+
+    - name: Assign backup policies to VMs
       uri:
         url: "https://{{ ovc }}/api/virtual_machines/{{ hostvars[groups['local'][0]]['vm_ids'] | json_query(q_vms) }}/set_policy"
         headers:
@@ -176,4 +139,29 @@
         q_vms: "json.virtual_machines[?name=='{{ inventory_hostname }}' && state=='ALIVE'].id | [0]"
       delegate_to: localhost
       when: inventory_hostname not in groups.local
-      tags: debug
+
+    - set_fact: dummy_vms_string="{{ dummy_vm_prefix }}-in-dockvols-{{ datastores | join(','+dummy_vm_prefix+'-in-dockvols-') }}"
+      when: inventory_hostname in groups.local
+
+    - set_fact: dummy_vms="{{ dummy_vms_string.split(',') }}"
+      when: inventory_hostname in groups.local
+
+    - name: Assign backup policies to Docker volumes
+      uri:
+        url: "https://{{ ovc }}/api/virtual_machines/{{ hostvars[groups['local'][0]]['vm_ids'] | json_query(q_vms) }}/set_policy"
+        headers:
+          Content-Type: application/vnd.simplivity.v1+json
+          Authorization: Bearer {{ hostvars[groups['local'][0]]['token']['stdout'] }}
+        method: POST
+        body: {"policy_id":"{{ hostvars[groups['local'][0]]['policy_ids'] | json_query(q_policies) }}"}
+        status_code: 202
+        body_format: json
+        force_basic_auth: yes
+        validate_certs: no
+      vars:
+        q_policies: "json.policies[?name=='{{ docker_volumes_policy }}'].id | [0]"
+        q_vms: "json.virtual_machines[?name=='{{ item }}' && state=='ALIVE'].id | [0]"
+      delegate_to: localhost
+      when: inventory_hostname in groups.local
+      with_items: "{{ dummy_vms }}"
+
