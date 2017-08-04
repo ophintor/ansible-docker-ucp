@@ -25,6 +25,7 @@ backup_policies:
    start_time: '00:00'
    frequency: '60'
    retention: '2880'
+dummy_vm_prefix: 'dummyVM'
 
 # Networking
 nic_name: 'ens192'
