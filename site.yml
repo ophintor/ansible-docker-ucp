@@ -4,7 +4,7 @@
 - include: playbooks/create_vms.yml
 - include: playbooks/power_on_guests.yml
 - include: playbooks/config_networking.yml
-- include: playbooks/distribute_keys.yml
+#- include: playbooks/distribute_keys.yml # this step is optional; enabling it will allow for passwordless login between nodes
 - include: playbooks/install_haproxy.yml
 - include: playbooks/install_ntp.yml
 - include: playbooks/install_docker.yml
