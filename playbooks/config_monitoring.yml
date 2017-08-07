@@ -42,6 +42,18 @@
         delay: 15
       when: inventory_hostname in groups.ucp_main
 
+    - name: Check if data source already available
+      uri:
+        url: "http://{{ inventory_hostname }}.{{ domain_name }}:3000/api/datasources/name/Prometheus"
+        method: GET
+        user: admin
+        password: admin
+        status_code: 200,404
+        body_format: json
+        force_basic_auth: yes
+      when: inventory_hostname in groups.ucp_main
+      register: ds
+
     - name: Create Grafana Data Source
       uri:
         url: "http://{{ inventory_hostname }}.{{ domain_name }}:3000/api/datasources"
@@ -52,9 +64,9 @@
         status_code: 200
         body_format: json
         force_basic_auth: yes
-      when: inventory_hostname in groups.ucp_main
+      when: inventory_hostname in groups.ucp_main and ds.status == 404
 
-# API doesnt seem to be working
+# API doesnt seem to be working for this
 #    - name: Import Dashboard
 #      uri:
 #        url: "http://{{ inventory_hostname }}.{{ domain_name }}:3000/api/dashboards/import"
