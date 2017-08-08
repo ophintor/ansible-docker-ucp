@@ -46,7 +46,7 @@ ucp_username: 'admin'
 
 # Monitoring settings
 cadvisor_version: 'v0.25.0'
-node_exporter_version: 'v0.14.0'
+node_exporter_version: 'v1.14.0'
 prometheus_version: 'v1.7.1'
 grafana_version: '4.4.3'
 
