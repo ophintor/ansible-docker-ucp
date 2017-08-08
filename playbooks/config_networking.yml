@@ -13,11 +13,11 @@
       local_action:
         module: vmware_vm_shell
         hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_user }}"
-        password:  "{{ vcenter_pass }}"
+        username: "{{ vcenter_username }}"
+        password:  "{{ vcenter_password }}"
         vm_id: "{{ inventory_hostname }}"
         vm_username: "{{ vm_username }}"
-        vm_password: "{{ vm_pw }}"
+        vm_password: "{{ vm_password }}"
         vm_shell: /bin/echo
         vm_shell_args: "{{ inventory_hostname }}.{{ domain_name }} > /etc/hostname"
 
@@ -25,11 +25,11 @@
       local_action:
         module: vmware_vm_shell
         hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_user }}"
-        password:  "{{ vcenter_pass }}"
+        username: "{{ vcenter_username }}"
+        password:  "{{ vcenter_password }}"
         vm_id: "{{ inventory_hostname }}"
         vm_username: "{{ vm_username }}"
-        vm_password: "{{ vm_pw }}"
+        vm_password: "{{ vm_password }}"
         vm_shell: /usr/bin/hostnamectl
         vm_shell_args: "set-hostname {{ inventory_hostname }}"
 
@@ -37,11 +37,11 @@
       local_action:
         module: vmware_vm_shell
         hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_user }}"
-        password:  "{{ vcenter_pass }}"
+        username: "{{ vcenter_username }}"
+        password:  "{{ vcenter_password }}"
         vm_id: "{{ inventory_hostname }}"
         vm_username: "{{ vm_username }}"
-        vm_password: "{{ vm_pw }}"
+        vm_password: "{{ vm_password }}"
         vm_shell: /usr/bin/nmcli
         vm_shell_args: "con add con-name {{ nic_name }} ifname {{ nic_name }} type ethernet ip4 {{ ip_addr }} gw4 {{ gateway }}"
 
@@ -49,11 +49,11 @@
       local_action:
         module: vmware_vm_shell
         hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_user }}"
-        password:  "{{ vcenter_pass }}"
+        username: "{{ vcenter_username }}"
+        password:  "{{ vcenter_password }}"
         vm_id: "{{ inventory_hostname }}"
         vm_username: "{{ vm_username }}"
-        vm_password: "{{ vm_pw }}"
+        vm_password: "{{ vm_password }}"
         vm_shell: /usr/bin/nmcli
         vm_shell_args: "con up {{ nic_name }}"
 
@@ -61,11 +61,11 @@
       local_action:
         module: vmware_vm_shell
         hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_user }}"
-        password:  "{{ vcenter_pass }}"
+        username: "{{ vcenter_username }}"
+        password:  "{{ vcenter_password }}"
         vm_id: "{{ inventory_hostname }}"
         vm_username: "{{ vm_username }}"
-        vm_password: "{{ vm_pw }}"
+        vm_password: "{{ vm_password }}"
         vm_shell: /usr/bin/nmcli
         vm_shell_args: "con mod {{ nic_name }} connection.autoconnect yes"
 

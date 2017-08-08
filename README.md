@@ -43,8 +43,8 @@ I'm assuming you're using a RHEL/CentOS server here but it can be done in other 
 	- Create (or overwrite the `group_vars/vault` file with the below:
 	```
 	---
-	vcenter_pass: 'yourpassword'
-	vm_pw: 'yourpassword'
+	vcenter_password: 'yourpassword'
+	vm_password: 'yourpassword'
 	```
 	- Encrypt it by running `ansible-vault encrypt group_vars/vault`; enter your password when prompted
 	- Create a file called .vault_pass containing the password and change permissions to 0600

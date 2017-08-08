@@ -36,7 +36,7 @@
       when: swarm_inactive.stdout == "1"
 
     - name: Install first DTR node
-      command: docker run --rm docker/dtr:{{ dtr_version }} install --nfs-storage-url nfs://{{ nfs_server }}{{ images_folder }} --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-insecure-tls --dtr-external-url https://{{ dtr_lb }} --ucp-url https://{{ ucp_main }} --ucp-username admin --ucp-password {{ vm_pw }}
+      command: docker run --rm docker/dtr:{{ dtr_version }} install --nfs-storage-url nfs://{{ nfs_server }}{{ images_folder }} --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-insecure-tls --dtr-external-url https://{{ dtr_lb }} --ucp-url https://{{ ucp_main }} --ucp-username {{ ucp_username }} --ucp-password {{ ucp_password }}
       when: inventory_hostname in groups.dtr_main and swarm_inactive.stdout == "1"
       register: dtrlog
       until: dtrlog.rc == 0
@@ -49,7 +49,7 @@
       when: inventory_hostname in groups.dtr_main
 
     - name: Add DTR nodes
-      command: docker run --rm docker/dtr:{{ dtr_version }} join --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-url https://{{ ucp_main }} --ucp-username admin --ucp-password {{ vm_pw }} --ucp-insecure-tls --existing-replica-id {{ hostvars[dtr_main]['replica_id']['stdout'] }} 
+      command: docker run --rm docker/dtr:{{ dtr_version }} join --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-url https://{{ ucp_main }} --ucp-username {{ ucp_username }} --ucp-password {{ ucp_password }} --ucp-insecure-tls --existing-replica-id {{ hostvars[dtr_main]['replica_id']['stdout'] }} 
       register: task_result
       until: task_result.rc == 0
       retries: 20

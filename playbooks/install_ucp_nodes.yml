@@ -35,7 +35,7 @@
       copy: src="{{ license_file }}" dest="/tmp/{{ license_file | basename }}"
 
     - name: Install swarm leader and first UCP node
-      shell: docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp:{{ ucp_version }} install --host-address {{ ip_addr | ipaddr('address') }} --admin-username=admin --admin-password={{ vm_pw }} --license "$(cat /tmp/{{ license_file | basename }})" {{ san_all_formatted }}
+      shell: docker run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock docker/ucp:{{ ucp_version }} install --host-address {{ ip_addr | ipaddr('address') }} --admin-username={{ ucp_username }} --admin-password={{ ucp_password }} --license "$(cat /tmp/{{ license_file | basename }})" {{ san_all_formatted }}
       register: output
       when: inventory_hostname in groups.ucp_main and swarm_inactive.stdout == "1"
 

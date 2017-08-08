@@ -1,7 +1,7 @@
 ---
 # VMs information
 vcenter_hostname: 'LondonVC.cloud.local'
-vcenter_user: 'David.Pintor@DEMO'
+vcenter_username: 'David.Pintor@DEMO'
 datacenter: 'London'
 vm_username: 'root'
 vm_template: 'dp-template'
@@ -12,7 +12,7 @@ disk2_part: '/dev/sdb1'
 vsphere_plugin_version: 'latest' # was 0.12
 
 # Simplivity information
-simplivity_user: 'David.Pintor@DEMO'
+simplivity_username: 'David.Pintor@DEMO'
 omnistack_ovc: ['10.20.4.166']
 backup_policies:
  - name: 'dp-bronze'
@@ -42,6 +42,13 @@ dtr_version: 'latest'
 ucp_version: 'latest'
 images_folder: '/docker-images'
 license_file: '/root/ansible-docker-ucp/license.lic'
+ucp_username: 'admin'
+
+# Monitoring settings
+cadvisor_version: 'v0.25.0'
+node_exporter_version: 'v0.14.0'
+prometheus_version: 'v1.7.1'
+grafana_version: '4.4.3'
 
 # Comment out proxy settings if not required
 env:

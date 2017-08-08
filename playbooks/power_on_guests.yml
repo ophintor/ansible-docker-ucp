@@ -13,8 +13,8 @@
     - name: Power on guests
       vsphere_guest:
         vcenter_hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_user }}"
-        password: "{{ vcenter_pass }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
         guest: "{{ inventory_hostname }}"
         state: powered_on
 

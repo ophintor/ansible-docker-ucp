@@ -1,0 +1,25 @@
+---
+- hosts: dtr_main
+  gather_facts: false
+  become_user: root
+  become: true
+
+  vars_files:
+    - ../group_vars/vars
+    - ../group_vars/vault
+
+  environment: "{{ env }}"
+
+  tasks:
+    - name: Enable image scanning
+      uri:
+        url: "https://{{ inventory_hostname }}/api/v0/meta/settings"
+        method: POST
+        user: "{{ ucp_username }}"
+        password: "{{ ucp_password }}"
+        body: {"scanningEnabled":true}
+        status_code: 200
+        body_format: json
+        force_basic_auth: yes
+        validate_certs: no
+

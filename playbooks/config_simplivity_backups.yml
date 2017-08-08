@@ -15,7 +15,7 @@
   tasks:
     # This task should use the uri module but not sure how to use the parameters in it
     - name: Get Simplivity token
-      shell: curl -k https://simplivity@{{ ovc }}/api/oauth/token -d grant_type=password -d username='{{ simplivity_user }}' -d password='{{ simplivity_password }}' | python -mjson.tool | grep access_token | awk -F'"' '{ print $4 }'
+      shell: curl -k https://simplivity@{{ ovc }}/api/oauth/token -d grant_type=password -d username='{{ simplivity_username }}' -d password='{{ simplivity_password }}' | python -mjson.tool | grep access_token | awk -F'"' '{ print $4 }'
       register: token
       when: inventory_hostname in groups.local
 
@@ -26,7 +26,7 @@
     #    headers:
     #      Content-Type: application/vnd.simplivity.v1+json
     #    method: GET
-    #    body: {"grant_type": "password","username": "{{ simplivity_user }}","password": "{{ simplivity_password }}"}
+    #    body: {"grant_type": "password","username": "{{ simplivity_username }}","password": "{{ simplivity_password }}"}
     #    status_code: 200
     #    body_format: json
     #    force_basic_auth: yes

@@ -13,8 +13,8 @@
     - name: Create all VMs
       vmware_guest:
         hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_user }}"
-        password: "{{ vcenter_pass }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
         validate_certs: no
         esxi_hostname: "{{ esxi_host }}"
         datacenter: "{{ datacenter }}"
@@ -29,8 +29,8 @@
     - name: Add secondary disks
       vsphere_guest:
         vcenter_hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_user }}"
-        password: "{{ vcenter_pass }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
         guest: "{{ inventory_hostname }}"
         state: reconfigured
         vm_disk:
