@@ -20,15 +20,6 @@
         part_end: 100%
       ignore_errors: yes
         
-#    - name: Set partition label GPT
-#      command: parted -s -a optimal {{ disk2 }} mklabel gpt
-#
-#    - name: Create partition
-#      command: parted -s -a optimal {{ disk2 }} mkpart primary 0% 100%
-#
-#    - name: Set LVM on partition
-#      command: parted -s -a optimal {{ disk2 }} set 1 lvm on
-
     - name: Create Docker VG
       lvg:
         vg: docker
@@ -68,4 +59,4 @@
         state: directory
 
     - name: Config Docker daemon
-      copy: src=../files/daemon.json dest=/etc/docker/daemon.json
+      template: src=../templates/daemon.json.j2 dest=/etc/docker/daemon.json

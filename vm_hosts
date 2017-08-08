@@ -75,12 +75,22 @@ ram='4096'
 disk2_size='200'
 node_policy='dp-gold'
 
+[logger]
+dp-logger ip_addr='10.20.6.84/22' esxi_host='omnicube204165.cloud.local'
+
+[logger:vars]
+cpus='2'
+ram='4096'
+disk2_size='0'
+node_policy='dp-gold'
+
 [vms:children]
 ucp
 dtr
 worker
 lbs
 nfs
+logger
 
 # Local 
 [local]

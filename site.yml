@@ -8,6 +8,7 @@
 - include: playbooks/install_haproxy.yml
 - include: playbooks/install_ntp.yml
 - include: playbooks/install_docker.yml
+- include: playbooks/config_rsyslog.yml
 - include: playbooks/config_lvs.yml
 - include: playbooks/start_docker.yml
 - include: playbooks/docker_post_config.yml
