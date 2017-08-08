@@ -55,3 +55,17 @@
       retries: 20
       delay: 30
       when: inventory_hostname not in groups.dtr_main and swarm_inactive.stdout == "1"
+
+    - name: Enable image scanning
+      uri:
+        url: "https://{{ inventory_hostname }}/api/v0/meta/settings"
+        method: POST
+        user: "{{ ucp_username }}"
+        password: "{{ ucp_password }}"
+        body: {"scanningEnabled":true}
+        status_code: 200
+        body_format: json
+        force_basic_auth: yes
+        validate_certs: no
+      when: inventory_hostname in groups.dtr_main
+
