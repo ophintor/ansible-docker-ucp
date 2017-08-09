@@ -47,13 +47,13 @@ dp-ucp ip_addr='10.20.6.81/22' esxi_host='omnicube204165.cloud.local'
 [dtr_lb]
 dp-dtr ip_addr='10.20.6.80/22' esxi_host='omnicube204165.cloud.local'
 
-[app_lb]
-dp-app ip_addr='10.20.6.82/22' esxi_host='omnicube204165.cloud.local'
+[worker_lb]
+dp-worker ip_addr='10.20.6.82/22' esxi_host='omnicube204165.cloud.local'
 
 [lbs]
 dp-ucp ip_addr='10.20.6.81/22' esxi_host='omnicube204165.cloud.local'
 dp-dtr ip_addr='10.20.6.80/22' esxi_host='omnicube204165.cloud.local'
-dp-app ip_addr='10.20.6.82/22' esxi_host='omnicube204165.cloud.local'
+dp-worker ip_addr='10.20.6.82/22' esxi_host='omnicube204165.cloud.local'
 
 [lbs:vars]
 cpus='2'

@@ -17,12 +17,12 @@
 
     - name: Updating haproxy.cfg on Worker Load Balancer
       template:
-        src: ../templates/haproxy.cfg.app.j2
+        src: ../templates/haproxy.cfg.worker.j2
         dest: /etc/haproxy/haproxy.cfg
         owner: root
         group: root
         mode: 0644        
-      when: inventory_hostname in groups.app_lb
+      when: inventory_hostname in groups.worker_lb
 
     - name: Updating haproxy.cfg on UCP Load Balancer
       template:
