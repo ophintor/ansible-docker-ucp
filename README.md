@@ -1,11 +1,14 @@
 ## What is this
-This bunch of playbooks will install a Docker Datacenter environment on top of vCenter on RHEL 7.3 VMs. It will install:
+This bunch of playbooks will install Docker Datacenter on top of a Simplivity environment using vCenter. The whole environment is created from a single temlate having RHEL 7.3 as the OS. It will install:
 
 - A number of UCP nodes (typically 3)
 - A number of DTR nodes (typically 3)
 - A number of Worker nodes (typically 3)
 - 3 load balancers (one for each of the above sets)
-- 1 NFS server
+- 1 NFS node
+- 1 logger node
+
+It will also create some grafana/prometheus containers to monitor the health of the system, an NFS node to store images, a centralized logger node (rsyslog) for all nodes and containers and it will set up backup policies for VMs and volumes in SImplivity.
 
 The playbooks are meant to support a different number of nodes (ie. 5 DTR nodes rather than 3). You can also add new nodes after an environment has been created by adding the hosts to the `vm_hosts`(inventory) file and running `site.yml` again as described below.
 
@@ -43,8 +46,10 @@ I'm assuming you're using a RHEL/CentOS server here but it can be done in other 
 	- Create (or overwrite the `group_vars/vault` file with the below:
 	```
 	---
-	vcenter_password: 'yourpassword'
-	vm_password: 'yourpassword'
+	vcenter_password: 'xxx'
+	vm_password: 'xxx'
+	simplivity_password: 'xxx'
+	ucp_password: 'xxx'
 	```
 	- Encrypt it by running `ansible-vault encrypt group_vars/vault`; enter your password when prompted
 	- Create a file called .vault_pass containing the password and change permissions to 0600
@@ -60,10 +65,10 @@ Just clean up:
 ## Run the playbooks
 From inside the cloned folder, run the playbook as follows:
 `ansible-playbook -i vm_hosts site.yml --vault-password-file .vault_pass`
-It should take about 25 minutes to run.
+It should take about 30 minutes to run.
 
 ## Monitoring capabilities
-The last step of the `site.yml` playbook will create a monitoring stack using Graphana and Prometheus. You can access the Graphana UI by browsing to http://UCP-NODE:3000. There is an example dashboard in JSON format included in the monitoring folder that you can import from the UI.
+One of the steps within the `site.yml` playbook will create a monitoring stack using Graphana and Prometheus. You can access the Graphana UI by browsing to http://UCP-NODE:3000.
 
 ## Known issues
 - Your FQDN should resolve using DNS or else they will fail when trying to set up your DTR. A solution to this is either using your own publicly accessible domain or alternatively you could try this: https://github.com/bobfraser1/alpine-router
