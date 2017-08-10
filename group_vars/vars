@@ -1,5 +1,5 @@
 ---
-# VMs information
+# VMware information
 vcenter_hostname: 'LondonVC.cloud.local'
 vcenter_username: 'David.Pintor@DEMO'
 datacenter: 'London'

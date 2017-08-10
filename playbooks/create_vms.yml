@@ -38,4 +38,4 @@
             size_gb: "{{ disk2_size }}"
             type: thin
             datastore: "{{ datastores | random }}"
-      when: inventory_hostname not in groups.lbs and inventory_hostname not in groups.logger
+      when: disk2_size is defined
