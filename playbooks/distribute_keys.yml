@@ -7,6 +7,8 @@
   vars_files:
     - ../group_vars/vars
 
+  environment: "{{ env }}"
+
   tasks:
     - stat: path=/root/.ssh/id_rsa
       register: key

@@ -14,7 +14,6 @@
     dtr_main: "{{ groups['dtr_main'][0] }}"
     nfs_server: "{{ hostvars[groups['nfs'][0]].ip_addr | ipaddr('address') }}"
 
-
   tasks:
     - name: Open required ports for DTR
       command: firewall-cmd --permanent --zone=public --add-port=80/tcp --add-port=443/tcp --add-port=2377/tcp --add-port=4789/tcp --add-port=4789/udp --add-port=7946/tcp --add-port=7946/udp --add-port=12376/tcp

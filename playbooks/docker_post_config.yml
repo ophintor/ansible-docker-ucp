@@ -9,6 +9,9 @@
 
   vars:
     dtr_lb: "{{ groups['dtr_lb'][0] }}.{{ domain_name }}"
+
+  environment: "{{ env }}"
+
   tasks:
     - name: Create Docker service directory
       file:

@@ -8,7 +8,6 @@
     - ../group_vars/vars
     - ../group_vars/vault
 
-
   vars:
     powercli_script: '/tmp/vols.ps1'
 

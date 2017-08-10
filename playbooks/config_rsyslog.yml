@@ -7,6 +7,8 @@
   vars_files:
     - ../group_vars/vars
 
+  environment: "{{ env }}"
+
   tasks:
     - name: Open required ports for rsyslog
       command: firewall-cmd --permanent --zone=public --add-port=514/tcp --add-port=514/udp

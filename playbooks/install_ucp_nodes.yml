@@ -15,6 +15,8 @@
     san_all: "{{ san_hosts }} + {{ san_ips }} + {{ san_lb_ip }}"
     san_all_formatted: "--san {{ san_all | join (' --san ') }}"
 
+  environment: "{{ env }}"
+
   tasks:
     - name: Open required ports for UCP
       command: firewall-cmd --permanent --zone=public --add-port=443/tcp --add-port=2376/tcp --add-port=2377/tcp --add-port=4789/tcp --add-port=4789/udp --add-port=7946/tcp --add-port=7946/udp --add-port=12376/tcp --add-port=12379/tcp --add-port=12380/tcp --add-port=12381/tcp --add-port=12382/tcp --add-port=12383/tcp --add-port=12384/tcp --add-port=12385/tcp --add-port=12386/tcp --add-port=12387/tcp

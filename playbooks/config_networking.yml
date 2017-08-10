@@ -8,6 +8,8 @@
     - ../group_vars/vars
     - ../group_vars/vault
 
+  environment: "{{ env }}"
+
   tasks:
     - name: Change hostname
       local_action:

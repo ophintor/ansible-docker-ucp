@@ -7,6 +7,8 @@
   vars_files:
     - ../group_vars/vars
 
+  environment: "{{ env }}"
+
   tasks:
     - name: Create partition on second disk
       parted:
