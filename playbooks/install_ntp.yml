@@ -15,16 +15,18 @@
         name: ntp
         state: latest
 
-    - name: Updating ntp.conf
+    - name: Update ntp.conf
       template:
         src: ../templates/ntp.conf.j2
         dest: /etc/ntp.conf
         owner: root
         group: root
         mode: 0644        
+      notify: Enable and restart NTP service
 
-    - name: Enable and start NTP service
+  handlers:
+    - name: Enable and restart NTP service
       systemd:
         name: ntpd
         enabled: yes
-        state: started
+        state: restarted
