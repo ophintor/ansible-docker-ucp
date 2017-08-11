@@ -10,6 +10,12 @@
   environment: "{{ env }}"
 
   tasks:
+    - name: Open http and https ports
+      command: firewall-cmd --permanent --zone=public --add-port=80/tcp --add-port=443/tcp
+
+    - name: Reload firewalld
+      command: firewall-cmd --reload
+
     - name: Install haproxy
       yum:
         name: haproxy
@@ -23,6 +29,7 @@
         group: root
         mode: 0644        
       when: inventory_hostname in groups.worker_lb
+      notify: Enable and start haproxy service
 
     - name: Update haproxy.cfg on UCP Load Balancer
       template:
@@ -32,6 +39,7 @@
         group: root
         mode: 0644
       when: inventory_hostname in groups.ucp_lb
+      notify: Enable and start haproxy service
 
     - name: Update haproxy.cfg on DTR Load Balancer
       template:
@@ -41,15 +49,11 @@
         group: root
         mode: 0644
       when: inventory_hostname in groups.dtr_lb
+      notify: Enable and start haproxy service
 
+  handlers:
     - name: Enable and start haproxy service
       systemd:
         name: haproxy
         enabled: yes
-        state: started
-
-    - name: Open http and https ports
-      command: firewall-cmd --permanent --zone=public --add-port=80/tcp --add-port=443/tcp
-
-    - name: Reload firewalld
-      command: firewall-cmd --reload
+        state: restarted
