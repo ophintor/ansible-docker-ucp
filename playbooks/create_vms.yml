@@ -41,3 +41,7 @@
             type: thin
             datastore: "{{ datastores | random }}"
       when: disk2_size is defined
+
+    - name: Wait for VMs to boot up
+      pause:
+        minutes: 3
