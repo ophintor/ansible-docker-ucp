@@ -1,5 +1,5 @@
 ---
-# VMware information
+# VMware configuration
 vcenter_hostname: 'LondonVC.cloud.local'
 vcenter_username: 'David.Pintor@DEMO'
 datacenter: 'London'
@@ -11,7 +11,7 @@ disk2: '/dev/sdb'
 disk2_part: '/dev/sdb1'
 vsphere_plugin_version: 'latest' # was 0.12
 
-# Simplivity information
+# Simplivity configuration
 simplivity_username: 'David.Pintor@DEMO'
 omnistack_ovc: ['10.20.4.166']
 backup_policies:
@@ -33,9 +33,9 @@ nic_name: 'ens192'
 gateway: '10.20.4.1'
 dns: ['10.20.0.12','10.20.0.10']
 domain_name: 'dabeed.net'
-ntp_server: ['0.us.pool.net.org','1.us.pool.net.org','2.us.pool.net.org']
+ntp_servers: ['0.us.pool.net.org','1.us.pool.net.org','2.us.pool.net.org']
 
-# Docker settings
+# Docker configuration
 docker_ee_url: 'https://storebits.docker.com/ee/linux/sub-bee89908-9360-4f5c-a3e2-e059a8f88605'
 rhel_version: '7.3'
 dtr_version: 'latest'
@@ -44,12 +44,13 @@ images_folder: '/docker-images'
 license_file: '/root/ansible-docker-ucp/license.lic'
 ucp_username: 'admin'
 
-# Monitoring settings
+# Monitoring configuration
 cadvisor_version: 'v0.25.0'
 node_exporter_version: 'v1.14.0'
 prometheus_version: 'v1.7.1'
 grafana_version: '4.4.3'
 
+# Environment configuration
 # Comment out proxy settings if not required
 env:
 #  http_proxy: 'http://15.184.4.2:8080'

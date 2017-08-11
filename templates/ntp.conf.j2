@@ -7,6 +7,6 @@ restrict -4 default kod notrap nomodify nopeer noquery
 restrict -6 default kod notrap nomodify nopeer noquery
 restrict ::1
 restrict 127.0.0.1
-{% for s in ntp_server %}
+{% for s in ntp_servers %}
 server {{ s }}
 {% endfor %}
