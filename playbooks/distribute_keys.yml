@@ -10,7 +10,8 @@
   environment: "{{ env }}"
 
   tasks:
-    - stat: path=/root/.ssh/id_rsa
+    - name: Register key
+      stat: path=/root/.ssh/id_rsa
       register: key
 
     - name: Create keypairs

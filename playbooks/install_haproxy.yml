@@ -15,7 +15,7 @@
         name: haproxy
         state: latest
 
-    - name: Updating haproxy.cfg on Worker Load Balancer
+    - name: Update haproxy.cfg on Worker Load Balancer
       template:
         src: ../templates/haproxy.cfg.worker.j2
         dest: /etc/haproxy/haproxy.cfg
@@ -24,7 +24,7 @@
         mode: 0644        
       when: inventory_hostname in groups.worker_lb
 
-    - name: Updating haproxy.cfg on UCP Load Balancer
+    - name: Update haproxy.cfg on UCP Load Balancer
       template:
         src: ../templates/haproxy.cfg.ucp.j2
         dest: /etc/haproxy/haproxy.cfg
@@ -33,7 +33,7 @@
         mode: 0644
       when: inventory_hostname in groups.ucp_lb
 
-    - name: Updating haproxy.cfg on DTR Load Balancer
+    - name: Update haproxy.cfg on DTR Load Balancer
       template:
         src: ../templates/haproxy.cfg.dtr.j2
         dest: /etc/haproxy/haproxy.cfg
