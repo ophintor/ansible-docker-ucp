@@ -18,7 +18,7 @@
       command: firewall-cmd --reload
       when: inventory_hostname in groups.logger
 
-    - name: Install dependencies
+    - name: Install rsyslog
       yum:
         name: rsyslog
         state: latest
@@ -37,5 +37,6 @@
     - name: Restart Rsyslog
       systemd:
         name: rsyslog
+        enabled: yes
         state: restarted
 

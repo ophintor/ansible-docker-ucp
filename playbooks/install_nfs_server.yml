@@ -27,7 +27,7 @@
         fstype: xfs
         dev: "{{ disk2_part }}"
 
-    - name: Create folder
+    - name: Create images folder
       file:
         path: "{{ images_folder }}"
         state: directory
@@ -60,10 +60,7 @@
         - nfs-idmap
 
     - name: Modify exports file on NFS server
-      template:
-        src: ../templates/exports.j2
-        dest: /etc/exports
+      template: src=../templates/exports.j2 dest=/etc/exports
 
     - name: Refresh exportfs
       command: exportfs -a
-
