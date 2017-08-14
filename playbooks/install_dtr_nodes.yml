@@ -30,7 +30,7 @@
       shell: docker info | grep "Swarm{{':'}} inactive" | wc -l
       register: swarm_inactive
 
-    - name: Add DTR and Worker nodes to the swarm
+    - name: Add DTR nodes to the swarm
       command: "{{ add_worker.token }}"
       when: swarm_inactive.stdout == "1"
 
@@ -52,7 +52,7 @@
       register: task_result
       until: task_result.rc == 0
       retries: 20
-      delay: 30
+      delay: 60
       when: inventory_hostname not in groups.dtr_main and swarm_inactive.stdout == "1"
 
     - name: Enable image scanning
@@ -67,4 +67,3 @@
         force_basic_auth: yes
         validate_certs: no
       when: inventory_hostname in groups.dtr_main
-

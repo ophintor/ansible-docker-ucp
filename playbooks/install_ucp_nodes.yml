@@ -24,11 +24,6 @@
     - name: Reload firewalld configuration
       command: firewall-cmd --reload
 
-#    - name: Restart docker service
-#      systemd:
-#        name: docker
-#        state: restarted
-
     - name: Check if node already belongs to the swarm
       shell: docker info | grep "Swarm{{ ":" }} inactive" | wc -l
       register: swarm_inactive
