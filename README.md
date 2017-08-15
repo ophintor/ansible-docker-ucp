@@ -89,9 +89,11 @@ In addition to the VM Template, we need another Virtual Machine where Ansible wi
 2. Configure a repository as explained in the previous section and install Ansible. Please note that version 2.2 is the minimum required. The instructions on how to install Ansible are described in its official website: [http://docs.ansible.com/ansible/intro\_installation.html](http://docs.ansible.com/ansible/intro_installation.html)
 3. Make a list of all the hostnames and IPs that will be in your system and update your /etc/hosts accordingly. This includes your UCP nodes, DTR nodes, worker nodes, NFS server, logger server and load balancers.
 4. Install the following packages. They are a mandatory requirement for the playbooks to function as expected. Update pip if requested:
-`# yum install python-pyvmomi python-netaddr python2-jmespath python-pip gcc python-devel openssl-devel git`
-`# pip install cryptography`
-`# pip install pysphere`
+```
+# yum install python-pyvmomi python-netaddr python2-jmespath python-pip gcc python-devel openssl-devel git
+# pip install cryptography
+# pip install pysphere
+```
 
 5. Copy your SSH id to the VM Template so, in the future, your Ansible node can SSH without the need of a password to all the Virtual Machines created from the VM Template.
 `# ssh-copy-id root@<VM_Template>`
