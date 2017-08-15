@@ -622,3 +622,8 @@ The Docker Bench for Security is a script that checks for dozens of common best-
 The Docker Bench for Security should be run on a regular basis to make sure that our system is as secure as we'd expect it to be.
 
 More information about this tool plus the files to run it can be found in its Github repository: [https://github.com/docker/docker-bench-security](https://github.com/docker/docker-bench-security)
+
+# Contact
+Please get in touch if you have any questions.
+
+A much briefer video with a quick demo can be found here: https://vimeo.com/229389079
