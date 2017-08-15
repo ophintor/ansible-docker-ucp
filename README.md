@@ -10,7 +10,7 @@ More information about Docker Enterprise Edition can be found here: [https://www
 
 ## About Simplivity
 
-Simplivity is an enterprise-grade hyper-converged platform uniting best-in-class data services with the world&#39;s bestselling server.
+Simplivity is an enterprise-grade hyper-converged platform uniting best-in-class data services with the world's bestselling server.
 
 Rapid proliferation of applications and the increasing cost of maintaining legacy infrastructure causes significant IT challenges for many organisations. With HPE SimpliVity, you can streamline and enable IT operations at a fraction of the cost of traditional and public cloud solutions by combining your IT infrastructure and advanced data services into a single, integrated solution. HPE SimpliVity is a powerful, simple, and efficient hyperconverged platform that joins best-in-class data services with the world's best-selling server and offers the industry's most complete guarantee.
 
@@ -44,10 +44,10 @@ The steps to create a VM template are described below.
 1. Choose the location (host/cluster) where you wish to store your template.
 1. Choose a datastore where the template files will be stored.
 1. Choose the OS, in this case Linux, RHEL7 64bit.
-1. Pick the network to attach to your template. In this example we&#39;re only using one NIC but depending on how you plan to architect your environment you might want to add more than one.
+1. Pick the network to attach to your template. In this example we're only using one NIC but depending on how you plan to architect your environment you might want to add more than one.
 1. Create a primary disk. The chosen size in this case is 50GB but 20GB should be typically enough.
 1. Confirm that the settings are right and press Finish.
-1. The next step is to virtually insert the RHEL7 DVD, we do this by looking into the Settings of the newly created VM. Select your ISO file in the Datastore ISO File Device Type and make sure that the &quot;Connect at power on&quot; checkbox is checked.
+1. The next step is to virtually insert the RHEL7 DVD, we do this by looking into the Settings of the newly created VM. Select your ISO file in the Datastore ISO File Device Type and make sure that the "Connect at power on" checkbox is checked.
 1. Finally, you can optionally remove the Floppy Disk as this is not required for the VM.
 1. Power on the server and open the console to install the OS. You should see something similar to this. Pick your language and hit Continue.
 1. Scroll down and click on Installation Destination.
@@ -57,7 +57,7 @@ The steps to create a VM template are described below.
 1. Press Done and wait for the install to finish. Reboot and login into the system using the VM console.
 2. Once we are logged into the system we need to configure a yum repository so we can install any packages required at a later stage. We can do this in three different ways:
 
-**Option 1:** Use Red Hat subscription manager to register your system. This is the easiest way and will give you automatically access to the official Red Hat repositories. It requires having a Red Hat Network account though, so if you don&#39;t have one, you can use either Option 2 or 3. For option run you would do:
+**Option 1:** Use Red Hat subscription manager to register your system. This is the easiest way and will give you automatically access to the official Red Hat repositories. It requires having a Red Hat Network account though, so if you don't have one, you can use either Option 2 or 3. For option run you would do:
 
 ```# subscription-manager register --auto-attach```
 
@@ -97,7 +97,7 @@ In addition to the VM Template, we need another Virtual Machine where Ansible wi
 
 5. Copy your SSH id to the VM Template so, in the future, your Ansible node can SSH without the need of a password to all the Virtual Machines created from the VM Template.
 `# ssh-copy-id root@<VM_Template>`
-Please note that in both the Ansible node and the VM Template you might need to configure the network so one node can reach the other. Since this is a basic step and could vary on the user&#39;s environment I have purposefully omitted it.
+Please note that in both the Ansible node and the VM Template you might need to configure the network so one node can reach the other. Since this is a basic step and could vary on the user's environment I have purposefully omitted it.
 
 6. Retrieve the latest version of the playbooks using git.
 ```# git clone https://github.com/ophintor/ansible-docker-ucp.git```
@@ -197,15 +197,15 @@ All VMware-related variables should be here. All of them are mandatory and descr
 | Variable | Description |
 | --- | --- |
 | vcenter\_hostname | IP or hostname of the vCenter appliance |
-| vcenter\_username | Username to log in to the vCenter appliance. It might include a domain i.e. &#39;[administrator@vsphere.local](mailto:administrator@vsphere.local)&#39; |
+| vcenter\_username | Username to log in to the vCenter appliance. It might include a domain i.e. '[administrator@vsphere.local](mailto:administrator@vsphere.local)' |
 | datacenter | Name of the datacenter where the environment will be provisioned |
-| vm\_username | Username to log into the VMs. It needs to match the one from the VM Template, so unless you have created an user, you must use &#39;root&#39; |
+| vm\_username | Username to log into the VMs. It needs to match the one from the VM Template, so unless you have created an user, you must use 'root' |
 | vm\_template | Name of the VM Template to be used. Note that this is the name from a vCenter perspective, not the hostname |
-| folder\_name | vCenter folder to deploy the VMs. If you do not wish to deploy in a particular folder, the value should be &#39;/&#39; |
-| datastores | List of datastores to be used, in list format, i.e. [&#39;Datastore1&#39;,&#39;Datastore2&#39;...]. Please note that from a Simplivity perspective it&#39;s best practice to use just one Datastore. Using more than one will not provide any advantages in terms of reliability and will add additional complexity. |
-| disk2 | UNIX name of the second disk for the Docker VMs. Typically &#39;/dev/sdb&#39; |
-| disk2\_part | UNIX name of the partition of the second disk for the Docker VMs. Typically &#39;/dev/sdb1&#39; |
-| vsphere\_plugin\_version | Version of the vSphere plugin for Docker. The default is &#39;latest&#39; but you could pick a specific version, i.e. &#39;0.12&#39; |
+| folder\_name | vCenter folder to deploy the VMs. If you do not wish to deploy in a particular folder, the value should be '/' |
+| datastores | List of datastores to be used, in list format, i.e. ['Datastore1','Datastore2'...]. Please note that from a Simplivity perspective it's best practice to use just one Datastore. Using more than one will not provide any advantages in terms of reliability and will add additional complexity. |
+| disk2 | UNIX name of the second disk for the Docker VMs. Typically '/dev/sdb' |
+| disk2\_part | UNIX name of the partition of the second disk for the Docker VMs. Typically '/dev/sdb1' |
+| vsphere\_plugin\_version | Version of the vSphere plugin for Docker. The default is 'latest' but you could pick a specific version, i.e. '0.12' |
 
 ### Simplivity configuration
 
@@ -213,10 +213,10 @@ All Simplivity-related variables should be here. All of them are mandatory and d
 
 | Variable | Description |
 | --- | --- |
-| simplivity\_username | Username to log in to the Simplivity Omnistack appliances. It might include a domain i.e. &#39; [administrator@vsphere.local](mailto:administrator@vsphere.local)&#39; |
-| omnistack\_ovc | List of Omnistack hosts to be used, in list format, i.e. [&#39;omni1.local&#39;,&#39;onmi2.local&#39;...] |
-| backup\_policies | List of dictionaries containing the different backup policies to be used along with the scheduling information. Any number of backup policies can be created and they need to match the node\_policy variables defined in the inventory. The format is as follows:backup\_policies: - name: daily&#39;   days: &#39;All&#39;   start\_time: &#39;11:30&#39;   frequency: &#39;1440&#39;   retention: &#39;10080&#39; - name: &#39;hourly&#39;   days: &#39;All&#39;   start\_time: &#39;00:00&#39;   frequency: &#39;60&#39;   retention: &#39;2880&#39; |
-| dummy\_vm\_prefix | In order to be able to backup the Docker volumes, a number of &quot;dummy&quot; VMs need to be spin up. This variable will set a recognizable prefix for them |
+| simplivity\_username | Username to log in to the Simplivity Omnistack appliances. It might include a domain i.e. ' [administrator@vsphere.local](mailto:administrator@vsphere.local)' |
+| omnistack\_ovc | List of Omnistack hosts to be used, in list format, i.e. ['omni1.local','onmi2.local'...] |
+| backup\_policies | List of dictionaries containing the different backup policies to be used along with the scheduling information. Any number of backup policies can be created and they need to match the node\_policy variables defined in the inventory. The format is as follows:backup\_policies: - name: daily'   days: 'All'   start\_time: '11:30'   frequency: '1440'   retention: '10080' - name: 'hourly'   days: 'All'   start\_time: '00:00'   frequency: '60'   retention: '2880' |
+| dummy\_vm\_prefix | In order to be able to backup the Docker volumes, a number of "dummy" VMs need to be spin up. This variable will set a recognizable prefix for them |
 | docker\_volumes\_policy | Backup policy to use for the Docker Volumes |
 
 ### Networking configuration
@@ -227,9 +227,9 @@ All network-related variables should be here. All of them are mandatory and desc
 | --- | --- |
 | nic\_name | Name of the device, for RHEL this is typically ens192 and it is recommended to leave it as is |
 | gateway | IP address of the gateway to be used |
-| dns | List of DNS servers to be used, in list format, i.e. [&#39;8.8.8.8&#39;,&#39;4.4.4.4&#39;...] |
+| dns | List of DNS servers to be used, in list format, i.e. ['8.8.8.8','4.4.4.4'...] |
 | domain\_name | Domain name for your Virtual Machines |
-| ntp\_server | List of NTP servers to be used, in list format, i.e. [&#39;1.2.3.4&#39;,&#39;0.us.pool.net.org&#39;...] |
+| ntp\_server | List of NTP servers to be used, in list format, i.e. ['1.2.3.4','0.us.pool.net.org'...] |
 
 ### Docker configuration
 
@@ -251,10 +251,10 @@ All Monitoring-related variables should be here. This section only include versi
 
 | Variable | Description |
 | --- | --- |
-| cadvisor\_version | You could try a different version but it&#39;s not guaranteed that it will work. To make sure that no issues arise please use &#39;v0.25.0&#39; |
-| node\_exporter\_version | You could try a different version but it&#39;s not guaranteed that it will work. To make sure that no issues arise please use &#39;v1.14.0&#39; |
-| prometheus\_version | You could try a different version but it&#39;s not guaranteed that it will work. To make sure that no issues arise please use &#39;v1.7.1&#39; |
-| grafana\_version | You could try a different version but it&#39;s not guaranteed that it will work. To make sure that no issues arise please use &#39;4.4.3&#39; |
+| cadvisor\_version | You could try a different version but it's not guaranteed that it will work. To make sure that no issues arise please use 'v0.25.0' |
+| node\_exporter\_version | You could try a different version but it's not guaranteed that it will work. To make sure that no issues arise please use 'v1.14.0' |
+| prometheus\_version | You could try a different version but it's not guaranteed that it will work. To make sure that no issues arise please use 'v1.7.1' |
+| grafana\_version | You could try a different version but it's not guaranteed that it will work. To make sure that no issues arise please use '4.4.3' |
 
 ### Environment configuration
 
@@ -262,13 +262,13 @@ All Environment-related variables should be here. All of them are described in t
 
 | Variable | Description |
 | --- | --- |
-| env | Dictionary containing all environment variables. It contains four entries described below. Please comment out the proxy related settings if not required:<br \><ul><li>http\_proxy: HTTP proxy URL, i.e. &#39;http://15.184.4.2:8080&#39;. This variable is optional and only necessary if your environment is behind a proxy.</li><li>https\_proxy: HTTP proxy URL, i.e. &#39;http://15.184.4.2:8080&#39;. This variable is optional and only necessary if your environment is behind a proxy.</li><li>no\_proxy: List of hostnames or IPs that don&#39;t require proxy, i.e. &#39;localhost,127.0.0.1,.cloudra.local,10.10.174.&#39;. This variable is optional and only necessary if your environment is behind a proxy.</li><li>foo: Dummy variable that only exists to keep env not empty in case a proxy is not used. When env is empty they playbooks will still work but plenty of warnings will arise due to the env variable being empty</li></ul>|
+| env | Dictionary containing all environment variables. It contains four entries described below. Please comment out the proxy related settings if not required:<br \><ul><li>http\_proxy: HTTP proxy URL, i.e. 'http://15.184.4.2:8080'. This variable is optional and only necessary if your environment is behind a proxy.</li><li>https\_proxy: HTTP proxy URL, i.e. 'http://15.184.4.2:8080'. This variable is optional and only necessary if your environment is behind a proxy.</li><li>no\_proxy: List of hostnames or IPs that don't require proxy, i.e. 'localhost,127.0.0.1,.cloudra.local,10.10.174.'. This variable is optional and only necessary if your environment is behind a proxy.</li><li>foo: Dummy variable that only exists to keep env not empty in case a proxy is not used. When env is empty they playbooks will still work but plenty of warnings will arise due to the env variable being empty</li></ul>|
 
 ## Editing the vault
 
 Once our group variables file is ready, the next step is to create a vault file to match our environment. The vault file is essentially the same thing than the group variables but it will contain all sensitive variables and will be encrypted.
 
-To create a vault we&#39;ll create a new file group\_vars/vault and we&#39;ll add the following entries:
+To create a vault we'll create a new file group\_vars/vault and we'll add the following entries:
 ```
 ---
 vcenter_password: 'xxx'
@@ -286,12 +286,12 @@ Edit your vault anytime by running:
 
 The password you set on creation will be requested.
 
-In order for ansible to be able to read the vault we&#39;ll need to specify a file where the password is stored, for instance in a file called .vault\_pass. Once the file is created, take the following precautions to avoid illegitimate access to this file:
+In order for ansible to be able to read the vault we'll need to specify a file where the password is stored, for instance in a file called .vault\_pass. Once the file is created, take the following precautions to avoid illegitimate access to this file:
 
 1. Change the permissions so only root can read it
 ```# chmod 600 .vault_pass```
 
-1. Add the file to your .gitignore file if you&#39;re pushing the set of playbooks to a git repository
+1. Add the file to your .gitignore file if you're pushing the set of playbooks to a git repository
 
 # Running the playbooks
 
@@ -340,16 +340,16 @@ It is composed of the following sequential tasks:
 - Update /etc/hosts: Updates the /etc/hosts file using a template. The template file is called j2 and is located in the templates folder. The template will loop over all the nodes defined in the inventory to have a complete and up-to-date hosts file. More information about Ansible templates can be found here: [http://docs.ansible.com/ansible/latest/playbooks\_templating.html](http://docs.ansible.com/ansible/latest/playbooks_templating.html)
 - Update DNS settings: Updates the /etc/resolv.conf file using a template. The template file is called conf.j2 and is located in the templates folder. The template will loop over all the DNS hosts defined in the group variables to have a complete conf file. More information about Ansible templates can be found here: [http://docs.ansible.com/ansible/latest/playbooks\_templating.html](http://docs.ansible.com/ansible/latest/playbooks_templating.html)
 
-Since at the beginning of the playbook the Virtual Machines don&#39;t have yet network connectivity, in most tasks we will make use of the vmware\_vm\_shell Ansible module, that allows us to run shell commands directly on the Virtual Machines. More information about this module can be found here: [http://docs.ansible.com/ansible/latest/vmware\_vm\_shell\_module.html](http://docs.ansible.com/ansible/latest/vmware_vm_shell_module.html)
+Since at the beginning of the playbook the Virtual Machines don't have yet network connectivity, in most tasks we will make use of the vmware\_vm\_shell Ansible module, that allows us to run shell commands directly on the Virtual Machines. More information about this module can be found here: [http://docs.ansible.com/ansible/latest/vmware\_vm\_shell\_module.html](http://docs.ansible.com/ansible/latest/vmware_vm_shell_module.html)
 
 ## playbooks/distribute\_keys.yml
 
-This playbook is optional and will distribute all nodes&#39; public keys around so all nodes can password-less login to one another. Since this could be seen as a security risk (there is technically no need for a worker node user to log into an UCP node, for instance), it is disabled by default but can be uncommented for the site.yml file if required.
+This playbook is optional and will distribute all nodes' public keys around so all nodes can password-less login to one another. Since this could be seen as a security risk (there is technically no need for a worker node user to log into an UCP node, for instance), it is disabled by default but can be uncommented for the site.yml file if required.
 
 It is composed of the following sequential tasks:
 
 - Register key: Stores the default SSH private key (/root/.ssh/id\_rsa)
-- Create keypairs: Creates SSH key pairs in the nodes where these didn&#39;t yet exist, using the ssh-keygen tool.
+- Create keypairs: Creates SSH key pairs in the nodes where these didn't yet exist, using the ssh-keygen tool.
 - Fetch all public ssh keys: Registers all public keys from all nodes.
 - Deploy keys on all servers: Pushes all keys to all nodes using a nested loop.
 
@@ -417,7 +417,7 @@ This playbook will perform a set of operations on the Docker nodes in order to c
 
 It is composed of the following sequential tasks:
 
-- Create partition on second disk: Uses the Ansible parted module to create a LVM partition on the second disk. The partition will have a GPT label and will use the 100% of the drive. The directive ignore\_errors present in this task (and in some of the following ones) exists in order to allow for the playbook to be run more than once, for instance if we&#39;re running yml again to scale out our environment. Since the partition will be already created in this case scenario, the task will fail but will be safely ignored. Unfortunately, Ansible does not provide, as of today, with a more elegant method to allow for this module to be idempotent when using GPT labels.
+- Create partition on second disk: Uses the Ansible parted module to create a LVM partition on the second disk. The partition will have a GPT label and will use the 100% of the drive. The directive ignore\_errors present in this task (and in some of the following ones) exists in order to allow for the playbook to be run more than once, for instance if we're running yml again to scale out our environment. Since the partition will be already created in this case scenario, the task will fail but will be safely ignored. Unfortunately, Ansible does not provide, as of today, with a more elegant method to allow for this module to be idempotent when using GPT labels.
 - Create Docker VG: Creates a Volume Group called docker in the newly created partition.
 - Create thinpool LV: Creates a Logical Volume called thinpool in the docker Volume Group.
 - Create thinpoolmeta LV: Creates a Logical Volume called thinpoolmeta in the docker Volume Group.
@@ -442,7 +442,7 @@ It is composed of the following sequential tasks:
 At this point we have a meta task which goal is to run the handlers if required so the changes above are taken in account. More information about meta tasks can be found here: [http://docs.ansible.com/ansible/latest/meta\_module.html](http://docs.ansible.com/ansible/latest/meta_module.html)
 
 - Check if vsphere plugin is installed: Queries the list of Docker plugins to find out if the vSphere plugin has already been installed. The task will record the output, which will be used as a conditional for the next step
-- Install vsphere plugin: Installs the vSphere plugin if it&#39;s not already installed
+- Install vsphere plugin: Installs the vSphere plugin if it's not already installed
 
 This playbook also contains a handler, which is a task that will be run when notified by one or more of the specified tasks above. The goal of having a handler is typically to restart a service only when a configuration file has been changed.
 
@@ -456,7 +456,7 @@ It is composed of the following sequential tasks:
 
 - Open required ports: Makes use of the firewalld command to open the required ports for the NFS server
 - Reload firewalld configuration: Reloads the firewall on the logger node to apply the new rules
-- Create partition on second disk: Uses the Ansible parted module to create a partition on the second disk. Please note that since the GPT label is not used here, the module is by default idempotent and the tasks can be run multiple times, regardless of whether the partition exists or not, without failing. Hence we don&#39;t need the directive ignore\_errors in this occasion.
+- Create partition on second disk: Uses the Ansible parted module to create a partition on the second disk. Please note that since the GPT label is not used here, the module is by default idempotent and the tasks can be run multiple times, regardless of whether the partition exists or not, without failing. Hence we don't need the directive ignore\_errors in this occasion.
 - Create filesystem: Creates an xfs filesystem in the partition created above.
 - Create images folder: Creates a directory in the filesystem above. The directory will be named after the variable images\_folder and will host the images stored in the DTR nodes
 - Mount filesystem: Uses the Ansible mount module to mount the directory created above
@@ -538,21 +538,21 @@ At this stage we can connect to the UCP nodes on port 3000 and we will see the G
 
 ## playbooks/config\_dummy\_vms\_for\_docker\_volumes\_backup.yml
 
-This playbook will make sure that we are able to backup Docker volumes that have been created using the vSphere plugin in Simplivity. There is not a straight forward way to do this, so we need to use a workaround. Since all Docker volumes are going to be stored in the dockvols folder in the datastore(s), we need to create a &#39;dummy&#39; VM per datastore. The vmx, vmsd and vmkd files from this VMs will have to be inside the dockvols folder, so when these VMs are backed up, the volumes are backed up as well. Obviously these VMs don&#39;t need to take any resources and we can keep them powered off.
+This playbook will make sure that we are able to backup Docker volumes that have been created using the vSphere plugin in Simplivity. There is not a straight forward way to do this, so we need to use a workaround. Since all Docker volumes are going to be stored in the dockvols folder in the datastore(s), we need to create a 'dummy' VM per datastore. The vmx, vmsd and vmkd files from this VMs will have to be inside the dockvols folder, so when these VMs are backed up, the volumes are backed up as well. Obviously these VMs don't need to take any resources and we can keep them powered off.
 
 It is composed of the following sequential tasks:
 
-- Create Dummy VMs: Creates a &#39;dummy&#39; VM per datastore using extremely low specifications. The name of the VMs will be prefixed with the variable dummy\_vm\_prefix and suffixed with the datastore name where it lives.
+- Create Dummy VMs: Creates a 'dummy' VM per datastore using extremely low specifications. The name of the VMs will be prefixed with the variable dummy\_vm\_prefix and suffixed with the datastore name where it lives.
 - Generate powercli script: Generates a powerCLI script using a template that will take in account all defined datastores and that will be copied to the main UCP node in the location defined by the powercli\_script variable. The template file is called powercli\_script.j2 and is located in the templates folder. The script will perform the following tasks:
-  - For each &#39;dummy&#39; VM, the files \*.vmx, \*.vmsd and \*.vmdk will be copied over to the dockvols folder in its current datastore
-  - Using the \*.vmx files, we&#39;ll registed new &#39;dummy&#39; VMs that now live inside the dockvols folder. The name of these VMs will be composed of the dummy\_vm\_prefix, the string &quot;-in-dockvols-&quot; and the datastore name as the suffix.
+  - For each 'dummy' VM, the files \*.vmx, \*.vmsd and \*.vmdk will be copied over to the dockvols folder in its current datastore
+  - Using the \*.vmx files, we'll registed new 'dummy' VMs that now live inside the dockvols folder. The name of these VMs will be composed of the dummy\_vm\_prefix, the string "-in-dockvols-" and the datastore name as the suffix.
   - The old dummy VMs will be removed
 - Run powercli script on temporary docker container: Runs the generated script on a powerCLI container to perform the tasks described above. The container provides a powerCLI core environment and is provided by VMWare. More information about powerCLI core can be found here: [https://labs.vmware.com/flings/powercli-core](https://labs.vmware.com/flings/powercli-core). A good article on how to use the container can be found here: [http://www.virtuallyghetto.com/2016/10/5-different-ways-to-run-powercli-script-using-powercli-core-docker-container.html](http://www.virtuallyghetto.com/2016/10/5-different-ways-to-run-powercli-script-using-powercli-core-docker-container.html)
 - Delete powercli script from docker host: Deletes the generated script from the UCP host since it contains sensitive information, like the vCenter credentials, in plain text.
 
 ## playbooks/config\_simplivity\_backups.yml
 
-This playbook will configure the defined backup policies in the group variables file in Simplivity and will include all Docker nodes plus the &#39;dummy&#39; VMs created before, so the existing Docker volumes are also taken in account. The playbook will mainly use the Simplivite REST API to perform these tasks. A reference to the REST API can be found here: [https://api.simplivity.com/rest-api\_getting-started\_overview/rest-api\_getting-started\_overview\_rest-api-overview.html](https://api.simplivity.com/rest-api_getting-started_overview/rest-api_getting-started_overview_rest-api-overview.html)
+This playbook will configure the defined backup policies in the group variables file in Simplivity and will include all Docker nodes plus the 'dummy' VMs created before, so the existing Docker volumes are also taken in account. The playbook will mainly use the Simplivite REST API to perform these tasks. A reference to the REST API can be found here: [https://api.simplivity.com/rest-api\_getting-started\_overview/rest-api\_getting-started\_overview\_rest-api-overview.html](https://api.simplivity.com/rest-api_getting-started_overview/rest-api_getting-started_overview_rest-api-overview.html)
 
 It is composed of the following sequential tasks:
 
@@ -591,7 +591,7 @@ Notary/Docker Content Trust is a tool for publishing and managing trusted collec
 ## Prevent tags from being overwritten
 By default, users with access to push to a repository, can push the same tag multiple times to the same repository. As an example, a user pushes an image to library/wordpress:latest, and later another user can push the image with exactly the same name but different functionality. This might make it difficult to trace back the image to the build that generated it.
 
-To prevent this from happening you can configure a repository to be immutable. Once you push a tag, DTR won&#39;t anyone else to push another tag with the same name.
+To prevent this from happening you can configure a repository to be immutable. Once you push a tag, DTR won't anyone else to push another tag with the same name.
 
 More information about immutable tags can be found here: [https://beta.docs.docker.com/datacenter/dtr/2.3/guides/user/manage-images/prevent-tags-from-being-overwritten/](https://beta.docs.docker.com/datacenter/dtr/2.3/guides/user/manage-images/prevent-tags-from-being-overwritten/)
 
@@ -606,6 +606,6 @@ More information about this subject can be found here: [https://beta.docs.docker
 ## Docker Bench for Security
 The Docker Bench for Security is a script that checks for dozens of common best-practices around deploying Docker containers in production. The tests are all automated, and are inspired by the CIS Docker Community Edition Benchmark v1.1.0.
 
-The Docker Bench for Security should be run on a regular basis to make sure that our system is as secure as we&#39;d expect it to be.
+The Docker Bench for Security should be run on a regular basis to make sure that our system is as secure as we'd expect it to be.
 
 More information about this tool plus the files to run it can be found in its Github repository: [https://github.com/docker/docker-bench-security](https://github.com/docker/docker-bench-security)
