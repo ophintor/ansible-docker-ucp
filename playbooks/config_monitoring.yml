@@ -13,6 +13,9 @@
     - name: Open required ports for Grafana and Prometheus
       command: firewall-cmd --permanent --zone=public --add-port=9090/tcp --add-port=3000/tcp
 
+    - name: Reload firewalld configuration
+      command: firewall-cmd --reload
+
     - name: Copy monitoring files to UCP
       copy: 
         src: ../monitoring

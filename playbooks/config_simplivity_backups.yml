@@ -58,7 +58,7 @@
       with_items: "{{ backup_policies }}"
       when: inventory_hostname in groups.local
 
-    - name: Set list of non existent policies to be added
+    - name: Set list of nonexistent policies to be added
       set_fact: new_policies_names="{{ backup_policies_names | difference(current_policies_names) }}"
       when: inventory_hostname in groups.local
 
@@ -74,7 +74,6 @@
         body_format: json
         force_basic_auth: yes
         validate_certs: no
-      #with_items: "{{ backup_policies_names | difference(current_policies_names) }}"
       with_items: "{{ new_policies_names }}"
       when: inventory_hostname in groups.local
       register: create_output
@@ -109,7 +108,7 @@
         q: "json.policies[?name=='{{ item.name }}'].id | [0]"
       when: inventory_hostname in groups.local and new_policies_names | length > 0
 
-    - name: Get VM IDs
+    - name: Get VMs information
       uri:
         url: "https://{{ ovc }}/api/virtual_machines"
         headers:
@@ -140,10 +139,12 @@
       delegate_to: localhost
       when: inventory_hostname not in groups.local
 
-    - set_fact: dummy_vms_string="{{ dummy_vm_prefix }}-in-dockvols-{{ datastores | join(','+dummy_vm_prefix+'-in-dockvols-') }}"
+    - name: Set dummy VM names in one string
+      set_fact: dummy_vms_string="{{ dummy_vm_prefix }}-in-dockvols-{{ datastores | join(','+dummy_vm_prefix+'-in-dockvols-') }}"
       when: inventory_hostname in groups.local
 
-    - set_fact: dummy_vms="{{ dummy_vms_string.split(',') }}"
+    - name: Convert to list 
+      set_fact: dummy_vms="{{ dummy_vms_string.split(',') }}"
       when: inventory_hostname in groups.local
 
     - name: Assign backup policies to Docker volumes
@@ -164,4 +165,3 @@
       delegate_to: localhost
       when: inventory_hostname in groups.local
       with_items: "{{ dummy_vms }}"
-

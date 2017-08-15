@@ -13,7 +13,7 @@
     - name: Open http and https ports
       command: firewall-cmd --permanent --zone=public --add-port=80/tcp --add-port=443/tcp
 
-    - name: Reload firewalld
+    - name: Reload firewalld configuration
       command: firewall-cmd --reload
 
     - name: Install haproxy
