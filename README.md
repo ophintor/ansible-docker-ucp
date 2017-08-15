@@ -624,6 +624,7 @@ The Docker Bench for Security should be run on a regular basis to make sure that
 More information about this tool plus the files to run it can be found in its Github repository: [https://github.com/docker/docker-bench-security](https://github.com/docker/docker-bench-security)
 
 # Contact
-Please get in touch if you have any questions.
+Please get in touch via Github if you have any questions.
 
+# Demo
 A much briefer video with a quick demo can be found here: https://vimeo.com/229389079
