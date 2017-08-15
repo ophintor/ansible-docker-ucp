@@ -100,19 +100,22 @@ In addition to the VM Template, we need another Virtual Machine where Ansible wi
 Please note that in both the Ansible node and the VM Template you might need to configure the network so one node can reach the other. Since this is a basic step and could vary on the user&#39;s environment I have purposefully omitted it.
 
 6. Retrieve the latest version of the playbooks using git.
-`# git clone https://github.com/ophintor/ansible-docker-ucp.git`
+```# git clone https://github.com/ophintor/ansible-docker-ucp.git```
 
 ## Finalize the template
 
 Now that the VM Template has the public key of the Ansible node, we're ready to convert this VM to a VM Template. Perform the following steps in the VM Template to finalize its creation:
 
 1. Clean up the template by running the following commands:
-`# rm /etc/ssh/ssh_host_*`
-`# history -c`
-2. Shut down the VM
-`# shutdown –h now`
+```
+# rm /etc/ssh/ssh_host_*
+# history -c
+```
 
-1. Once the Virtual Machine is ready and turned off, we are ready to convert it to a template.
+2. Shut down the VM
+```# shutdown –h now```
+
+3. Once the Virtual Machine is ready and turned off, we are ready to convert it to a template.
 
 This completes the creation of the VM Template.
 
@@ -120,9 +123,9 @@ This completes the creation of the VM Template.
 
 In the Ansible node, we need now to prepare the configuration to match your own environment, prior to deploying Docker Datacenter and the rest of the nodes. To do so, we will need to edit and modify three different files:
 
-- The inventory: vm_hosts
-- The group variables: group_vars/vars
-- The encrypted group variable: group_vars/vault
+- The inventory: `vm_hosts`
+- The group variables: `group_vars/vars`
+- The encrypted group variable: `group_vars/vault`
 
 ## Editing the inventory
 
@@ -165,14 +168,15 @@ worker01 ip_addr='10.0.0.10/16' esxi_host='esxi1.domain.local'
 worker02 ip_addr='10.0.0.11/16' esxi_host='esxi1.domain.local'
 worker03 ip_addr='10.0.0.12/16' esxi_host='esxi1.domain.local' cpus='16' ram'32768'
 [worker:vars]
-cpus='4&'
-ram=&#39;16384'
+cpus='4'
+ram='16384'
 disk2_size='200'
 node_policy='bronze'
 ```
 In  the example above, the worker03 node would have 4 times more CPU and double RAM than the rest of worker nodes.
 
 The different variables you can use are as described in the table below. They are all mandatory unless if specified otherwise:
+
 | Variable | Scope | Description |
 | --- | --- | --- |
 | ip\_addr | Node | IP address in CIDR format to be given to a node |
