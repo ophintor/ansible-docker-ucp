@@ -89,6 +89,7 @@ In addition to the VM Template, we need another Virtual Machine where Ansible wi
 2. Configure a repository as explained in the previous section and install Ansible. Please note that version 2.2 is the minimum required. The instructions on how to install Ansible are described in its official website: [http://docs.ansible.com/ansible/intro\_installation.html](http://docs.ansible.com/ansible/intro_installation.html)
 3. Make a list of all the hostnames and IPs that will be in your system and update your /etc/hosts accordingly. This includes your UCP nodes, DTR nodes, worker nodes, NFS server, logger server and load balancers.
 4. Install the following packages. They are a mandatory requirement for the playbooks to function as expected. Update pip if requested:
+
 ```
 # yum install python-pyvmomi python-netaddr python2-jmespath python-pip gcc python-devel openssl-devel git
 # pip install cryptography
@@ -96,10 +97,13 @@ In addition to the VM Template, we need another Virtual Machine where Ansible wi
 ```
 
 5. Copy your SSH id to the VM Template so, in the future, your Ansible node can SSH without the need of a password to all the Virtual Machines created from the VM Template.
+
 `# ssh-copy-id root@<VM_Template>`
+
 Please note that in both the Ansible node and the VM Template you might need to configure the network so one node can reach the other. Since this is a basic step and could vary on the user's environment I have purposefully omitted it.
 
 6. Retrieve the latest version of the playbooks using git.
+
 ```# git clone https://github.com/ophintor/ansible-docker-ucp.git```
 
 ## Finalize the template
@@ -107,12 +111,14 @@ Please note that in both the Ansible node and the VM Template you might need to 
 Now that the VM Template has the public key of the Ansible node, we're ready to convert this VM to a VM Template. Perform the following steps in the VM Template to finalize its creation:
 
 1. Clean up the template by running the following commands:
+
 ```
 # rm /etc/ssh/ssh_host_*
 # history -c
 ```
 
 2. Shut down the VM
+
 ```# shutdown –h now```
 
 3. Once the Virtual Machine is ready and turned off, we are ready to convert it to a template.
@@ -173,6 +179,7 @@ ram='16384'
 disk2_size='200'
 node_policy='bronze'
 ```
+
 In  the example above, the worker03 node would have 4 times more CPU and double RAM than the rest of worker nodes.
 
 The different variables you can use are as described in the table below. They are all mandatory unless if specified otherwise:
@@ -269,6 +276,7 @@ All Environment-related variables should be here. All of them are described in t
 Once our group variables file is ready, the next step is to create a vault file to match our environment. The vault file is essentially the same thing than the group variables but it will contain all sensitive variables and will be encrypted.
 
 To create a vault we'll create a new file group\_vars/vault and we'll add the following entries:
+
 ```
 ---
 vcenter_password: 'xxx'
@@ -276,12 +284,15 @@ vm_password: 'xxx'
 simplivity_password: 'xxx'
 ucp_password: 'xxx'
 ```
+
 To encrypt the vault you need to run the following command:
+
 ```# ansible-vault encrypt group_vars/vault```
 
 You will be prompted for a password that will decrypt the vault when required.
 
 Edit your vault anytime by running:
+
 ```# ansible-vault edit group_vars/vault```
 
 The password you set on creation will be requested.
@@ -289,6 +300,7 @@ The password you set on creation will be requested.
 In order for ansible to be able to read the vault we'll need to specify a file where the password is stored, for instance in a file called .vault\_pass. Once the file is created, take the following precautions to avoid illegitimate access to this file:
 
 1. Change the permissions so only root can read it
+
 ```# chmod 600 .vault_pass```
 
 1. Add the file to your .gitignore file if you're pushing the set of playbooks to a git repository
@@ -296,6 +308,7 @@ In order for ansible to be able to read the vault we'll need to specify a file w
 # Running the playbooks
 
 So at this point the system is ready to be deployed. Go to the root folder and run the following command:
+
 ```# ansible-playbook -i vm_hosts site.yml --vault-password-file .vault_pass```
 
 The playbooks should run for 25-35 minutes depending on your server specifications and in the size of your environment.
