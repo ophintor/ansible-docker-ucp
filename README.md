@@ -197,7 +197,7 @@ All VMware-related variables should be here. All of them are mandatory and descr
 | Variable | Description |
 | --- | --- |
 | vcenter\_hostname | IP or hostname of the vCenter appliance |
-| vcenter\_username | Username to log in to the vCenter appliance. It might include a domain i.e. &#39; [administrator@vsphere.local](mailto:administrator@vsphere.local)&#39; |
+| vcenter\_username | Username to log in to the vCenter appliance. It might include a domain i.e. &#39;[administrator@vsphere.local](mailto:administrator@vsphere.local)&#39; |
 | datacenter | Name of the datacenter where the environment will be provisioned |
 | vm\_username | Username to log into the VMs. It needs to match the one from the VM Template, so unless you have created an user, you must use &#39;root&#39; |
 | vm\_template | Name of the VM Template to be used. Note that this is the name from a vCenter perspective, not the hostname |
@@ -262,7 +262,7 @@ All Environment-related variables should be here. All of them are described in t
 
 | Variable | Description |
 | --- | --- |
-| env | Dictionary containing all environment variables. It contains four entries described below. Please comment out the proxy related settings if not required:<ul><li>http\_proxy: HTTP proxy URL, i.e. &#39;http://15.184.4.2:8080&#39;. This variable is optional and only necessary if your environment is behind a proxy.</li><li>https\_proxy: HTTP proxy URL, i.e. &#39;http://15.184.4.2:8080&#39;. This variable is optional and only necessary if your environment is behind a proxy.</li><li>no\_proxy: List of hostnames or IPs that don&#39;t require proxy, i.e. &#39;localhost,127.0.0.1,.cloudra.local,10.10.174.&#39;. This variable is optional and only necessary if your environment is behind a proxy.</li><li>foo: Dummy variable that only exists to keep env not empty in case a proxy is not used. When env is empty they playbooks will still work but plenty of warnings will arise due to the env variable being empty</li></ul>|
+| env | Dictionary containing all environment variables. It contains four entries described below. Please comment out the proxy related settings if not required:<br \><ul><li>http\_proxy: HTTP proxy URL, i.e. &#39;http://15.184.4.2:8080&#39;. This variable is optional and only necessary if your environment is behind a proxy.</li><li>https\_proxy: HTTP proxy URL, i.e. &#39;http://15.184.4.2:8080&#39;. This variable is optional and only necessary if your environment is behind a proxy.</li><li>no\_proxy: List of hostnames or IPs that don&#39;t require proxy, i.e. &#39;localhost,127.0.0.1,.cloudra.local,10.10.174.&#39;. This variable is optional and only necessary if your environment is behind a proxy.</li><li>foo: Dummy variable that only exists to keep env not empty in case a proxy is not used. When env is empty they playbooks will still work but plenty of warnings will arise due to the env variable being empty</li></ul>|
 
 ## Editing the vault
 
@@ -277,26 +277,26 @@ simplivity_password: 'xxx'
 ucp_password: 'xxx'
 ```
 To encrypt the vault you need to run the following command:
-`# ansible-vault encrypt group_vars/vault`
+```# ansible-vault encrypt group_vars/vault```
 
 You will be prompted for a password that will decrypt the vault when required.
 
 Edit your vault anytime by running:
-`# ansible-vault edit group_vars/vault`
+```# ansible-vault edit group_vars/vault```
 
 The password you set on creation will be requested.
 
 In order for ansible to be able to read the vault we&#39;ll need to specify a file where the password is stored, for instance in a file called .vault\_pass. Once the file is created, take the following precautions to avoid illegitimate access to this file:
 
 1. Change the permissions so only root can read it
-`# chmod 600 .vault_pass`
+```# chmod 600 .vault_pass```
 
 1. Add the file to your .gitignore file if you&#39;re pushing the set of playbooks to a git repository
 
 # Running the playbooks
 
 So at this point the system is ready to be deployed. Go to the root folder and run the following command:
-`# ansible-playbook -i vm_hosts site.yml --vault-password-file .vault_pass`
+```# ansible-playbook -i vm_hosts site.yml --vault-password-file .vault_pass```
 
 The playbooks should run for 25-35 minutes depending on your server specifications and in the size of your environment.
 
