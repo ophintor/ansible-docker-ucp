@@ -269,7 +269,7 @@ All Environment-related variables should be here. All of them are described in t
 
 | Variable | Description |
 | --- | --- |
-| env | Dictionary containing all environment variables. It contains four entries described below. Please comment out the proxy related settings if not required: <ul><li>http\_proxy: HTTP proxy URL, i.e. 'http://15.184.4.2:8080'. This variable is optional and only necessary if your environment is behind a proxy.</li><li>https\_proxy: HTTP proxy URL, i.e. 'http://15.184.4.2:8080'. This variable is optional and only necessary if your environment is behind a proxy.</li><li>no\_proxy: List of hostnames or IPs that don't require proxy, i.e. 'localhost,127.0.0.1,.cloudra.local,10.10.174.'. This variable is optional and only necessary if your environment is behind a proxy.</li><li>foo: Dummy variable that only exists to keep env not empty in case a proxy is not used. When env is empty they playbooks will still work but plenty of warnings will arise due to the env variable being empty</li></ul>|
+| env | Dictionary containing all environment variables. It contains three entries described below. Please leave empty the proxy related settings if not required: <ul><li>http\_proxy: HTTP proxy URL, i.e. 'http://15.184.4.2:8080'. This variable defines the HTTP proxy url if your environment is behind a proxy.</li><li>https\_proxy: HTTP proxy URL, i.e. 'http://15.184.4.2:8080'. This variable defines the HTTPS proxy url if your environment is behind a proxy.</li><li>no\_proxy: List of hostnames or IPs that don't require proxy, i.e. 'localhost,127.0.0.1,.cloudra.local,10.10.174.'</li></ul>|
 
 ## Editing the vault
 
