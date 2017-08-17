@@ -79,6 +79,8 @@ gpgcheck = 0
 
 For additional information on how to configure a repository please check the Red Hat documentation: [https://access.redhat.com/documentation/en-US/Red\_Hat\_Enterprise\_Linux/7/html/System\_Administrators\_Guide/sec-Configuring\_Yum\_and\_Yum\_Repositories.html](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-Configuring_Yum_and_Yum_Repositories.html)
 
+Please keep in mind that if you use option 2 or 3 you will need to have the RHEL extra packages available. This is required for Docker 17.06, which needs the `container-selinux` package.
+
 At this stage the only thing left to do is to power off the Virtual Machine and convert it to a VM Template, but before we do that we need to set up our Ansible host, as explained in the next section.
 
 ## Creating the Ansible node

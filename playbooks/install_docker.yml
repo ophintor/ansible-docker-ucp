@@ -10,6 +10,9 @@
   environment: "{{ env }}"
 
   tasks:
+    - name: Enable extras RHEL repository
+      shell: yum-config-manager --enable rhel-7-server-extras-rpms
+
     - name: Install dependencies
       yum:
         name: "{{ item }}"
