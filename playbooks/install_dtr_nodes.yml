@@ -55,15 +55,16 @@
       delay: 60
       when: inventory_hostname not in groups.dtr_main and swarm_inactive.stdout == "1"
 
-    - name: Enable image scanning
-      uri:
-        url: "https://{{ inventory_hostname }}/api/v0/meta/settings"
-        method: POST
-        user: "{{ ucp_username }}"
-        password: "{{ ucp_password }}"
-        body: {"scanningEnabled":true}
-        status_code: 200
-        body_format: json
-        force_basic_auth: yes
-        validate_certs: no
-      when: inventory_hostname in groups.dtr_main
+# This task is not needed any more from DTR version 2.2.0 since it's enabled by default
+#    - name: Enable image scanning
+#      uri:
+#        url: "https://{{ inventory_hostname }}/api/v0/meta/settings"
+#        method: POST
+#        user: "{{ ucp_username }}"
+#        password: "{{ ucp_password }}"
+#        body: {"scanningEnabled":true}
+#        status_code: 200
+#        body_format: json
+#        force_basic_auth: yes
+#        validate_certs: no
+#      when: inventory_hostname in groups.dtr_main
